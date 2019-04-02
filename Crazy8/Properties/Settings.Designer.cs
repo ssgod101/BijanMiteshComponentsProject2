@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GameClient.Properties
+namespace Crazy8.Properties
 {
 
 

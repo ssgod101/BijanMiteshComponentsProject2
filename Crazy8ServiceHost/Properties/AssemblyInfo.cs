@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GameServiceHost")]
+[assembly: AssemblyTitle("Crazy8ServiceHost")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("GameServiceHost")]
+[assembly: AssemblyProduct("Crazy8ServiceHost")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d10ec499-a1a1-41d0-84bf-3446053b4726")]
+[assembly: Guid("8c557373-eb62-4e07-a00a-216369d3762a")]
 
 // Version information for an assembly consists of the following four values:
 //
