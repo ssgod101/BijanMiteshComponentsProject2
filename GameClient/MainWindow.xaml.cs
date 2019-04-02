@@ -23,6 +23,8 @@ namespace GameClient
         public MainWindow()
         {
             InitializeComponent();
+            this.ShowDialog();
+            
         }
     }
 }
