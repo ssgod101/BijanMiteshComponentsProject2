@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Canvas>
+            <ListBox x:Name="l"  Height="361" Width="378"></ListBox>
+            <TextBox Text="" x:Name="tBox" Canvas.Left="468" Canvas.Top="92" Width="216"></TextBox>
+            <Button x:Name="btn" Content="Button" Canvas.Left="620" Canvas.Top="145" Width="75" Click="Btn_Click"/>
+        </Canvas>
     </Grid>
 </Window>
