@@ -73,7 +73,7 @@ namespace Crazy8Library
             // Initialize member variables
             cards = new List<Card>();
             userCallBacks = new Dictionary<string, ICallBack>();
-            //Repopulate();
+            Repopulate();
         }
 
         public Card Draw()

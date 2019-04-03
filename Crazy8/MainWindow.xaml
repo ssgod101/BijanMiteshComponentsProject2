@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <ListBox x:Name="lbPlayerHand" HorizontalAlignment="Left" Height="193" Margin="154,67,0,0" VerticalAlignment="Top" Width="474"/>
+
     </Grid>
 </Window>

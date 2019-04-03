@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Crazy8"
-        mc:Ignorable="d" ResizeMode="NoResize"
+        mc:Ignorable="d" ResizeMode="NoResize" Closing="Window_Closing"
         Title="Lobby" Height="468.228" Width="808.101" Background="#FFC4E6F5">
     <Grid>
         <Grid.RowDefinitions>
