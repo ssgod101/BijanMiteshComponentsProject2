@@ -10,21 +10,33 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Crazy8
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Lobby.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Lobby : Window
     {
-        public MainWindow()
+        public Lobby()
         {
             InitializeComponent();
-            Lobby lobby = new Lobby();
-            lobby.ShowDialog();
+        }
+
+        private void Join_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Play_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
