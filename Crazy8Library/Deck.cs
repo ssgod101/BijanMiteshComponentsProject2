@@ -118,8 +118,8 @@ namespace Crazy8Library
 
         private void updateLobby()
         {
-            CallbackInfo info = new CallbackInfo(userCallBacks.Count);
-            foreach(ICallBack cb in userCallBacks.Values)
+            CallbackInfo info = new CallbackInfo(userCallBacks.Count, userCallBacks.Keys.ToArray());
+            foreach (ICallBack cb in userCallBacks.Values)
             {
                 cb.UpdateGui(info);
             }

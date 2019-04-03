@@ -16,6 +16,7 @@ namespace Crazy8Library
         //Game Info
         [DataMember] public int numPlayers { get; private set; }
 
+        [DataMember] public string[] playerNames { get; private set; }
 
         public CallbackInfo(int topS, int topR, int numPlayers)
         {
@@ -23,9 +24,10 @@ namespace Crazy8Library
             topRank = topR;
         }
 
-        public CallbackInfo(int num)
+        public CallbackInfo(int num, string[] names)
         {
             numPlayers = num;
+            playerNames = names;
         }
     }
 }
