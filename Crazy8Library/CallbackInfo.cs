@@ -17,8 +17,6 @@ namespace Crazy8Library
         [DataMember] public int numPlayers { get; private set; }
         [DataMember] public string[] playerNames { get; private set; }
 
-        [DataMember] public string[] playerNames { get; private set; }
-
         public CallbackInfo(int topS, int topR, int numPlayers)
         {
             topSuit = topS;
