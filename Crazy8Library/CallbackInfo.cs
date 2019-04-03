@@ -10,13 +10,22 @@ namespace Crazy8Library
     [DataContract]
     public class CallbackInfo
     {
+        //Lobby Info
         [DataMember] public int topSuit { get; private set; }
         [DataMember] public int topRank { get; private set; }
-        
-        public CallbackInfo(int topS, int topR)
+        //Game Info
+        [DataMember] public int numPlayers { get; private set; }
+
+
+        public CallbackInfo(int topS, int topR, int numPlayers)
         {
             topSuit = topS;
             topRank = topR;
+        }
+
+        public CallbackInfo(int num)
+        {
+            numPlayers = num;
         }
     }
 }
