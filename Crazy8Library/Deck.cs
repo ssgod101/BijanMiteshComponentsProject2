@@ -50,7 +50,7 @@ namespace Crazy8Library
             else
             {
                 ICallBack cb = OperationContext.Current.GetCallbackChannel<ICallBack>();
-
+                Console.WriteLine(name + " has joined!");
                 userCallBacks.Add(name.ToUpper(),cb);
                 updateLobby();
                 return true;
@@ -60,6 +60,7 @@ namespace Crazy8Library
         {
             if (userCallBacks.ContainsKey(name.ToUpper()))
             {
+                Console.WriteLine(name + " has left!");
                 userCallBacks.Remove(name.ToUpper());
                 updateLobby();
             }
@@ -118,7 +119,7 @@ namespace Crazy8Library
 
         private void updateLobby()
         {
-            CallbackInfo info = new CallbackInfo(userCallBacks.Count);
+            CallbackInfo info = new CallbackInfo(userCallBacks.Count,userCallBacks.Keys.ToArray());
             foreach(ICallBack cb in userCallBacks.Values)
             {
                 cb.UpdateGui(info);
