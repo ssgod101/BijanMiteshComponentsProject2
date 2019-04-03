@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Crazy8"
-        mc:Ignorable="d" WindowStyle="None" ResizeMode="NoResize"
-        Title="Lobby" Height="450" Width="800" Background="#FFC4E6F5">
+        mc:Ignorable="d" ResizeMode="NoResize"
+        Title="Lobby" Height="468.228" Width="808.101" Background="#FFC4E6F5">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -17,12 +17,13 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Content="Connected players:" FontSize="36" FontWeight="SemiBold" FontStyle="Italic" HorizontalAlignment="Right" VerticalAlignment="Center" Background="Transparent" Foreground="#FF168CDE"/>
-        <Label Grid.Row="0" Grid.Column="1" Content="0" FontSize="36" FontWeight="SemiBold" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" Background="Transparent" Foreground="#FF168CDE"/>
+        <Label x:Name="Players" Grid.Row="0" Grid.Column="1" Content="0" FontSize="36" FontWeight="SemiBold" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" Background="Transparent" Foreground="#FF168CDE"/>
         <Label Grid.Row="1" Grid.Column="0" Content="Enter Player Name:" FontSize="26" FontWeight="SemiBold" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Transparent" Foreground="#FF0A0A0A"/>
-        <TextBox Grid.Row="1" FontSize="26" FontWeight="SemiBold" FontStyle="Italic" VerticalAlignment="Center" Foreground="#FF0A0A0A" Margin="321,56,80,56" Grid.ColumnSpan="2"/>
-        <Button x:Name="Join" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" FontSize="26" Content="Join" Margin="325,56,10,56" Height="38" Click="Join_Click" />
-        <Button x:Name="Play" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" FontSize="26" Content="PLAY" Margin="100,50" Click="Play_Click" />
+        <TextBox x:Name="tbName" Grid.Row="1" FontSize="26" FontWeight="SemiBold" FontStyle="Italic" VerticalAlignment="Center" Foreground="#FF0A0A0A" Margin="321,48,80,52" Grid.ColumnSpan="2" Height="37" BorderBrush="#FF020202"/>
+        <Button x:Name="Join" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" FontSize="26" Content="Join" Margin="325,50,10,54" Height="36" Click="Join_Click" />
+        <Button x:Name="Play" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" FontSize="26" Content="PLAY" Margin="100,50" Click="Play_Click" IsEnabled="False" />
         <Button x:Name="Exit" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" FontSize="26" Content="EXIT" Margin="100,50" Click="Exit_Click" />
         <Button x:Name="Help" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" FontSize="16" Content="Help ?" Margin="10,10,336,105" />
+        <ListBox x:Name="lbNames" Background="#FFC4E6F5" Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="100,10,0,0" VerticalAlignment="Top" Width="290"/>
     </Grid>
 </Window>
