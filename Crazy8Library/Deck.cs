@@ -42,7 +42,7 @@ namespace Crazy8Library
         private Dictionary<string, ICallBack> userCallBacks;
 
         public bool Join(string name)
-        {
+        { 
             if(userCallBacks.Count >= 4 || userCallBacks.ContainsKey(name.ToUpper()))
             {
                 return false;
