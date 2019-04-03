@@ -37,13 +37,17 @@ namespace Crazy8Library
         private int cardIdx;        // the index of the next card to draw
         private static uint objCount = 0;
         private uint objNum;
+        private bool canJoin = true;
+
+        private int currentSuit;
+        private int currentRank;
 
         // Member variables related to the callbacks
         private Dictionary<string, ICallBack> userCallBacks;
 
         public bool Join(string name)
         { 
-            if(userCallBacks.Count >= 4 || userCallBacks.ContainsKey(name.ToUpper()))
+            if(userCallBacks.Count >= 4 || userCallBacks.ContainsKey(name.ToUpper()) || !canJoin)
             {
                 return false;
             }
@@ -65,6 +69,17 @@ namespace Crazy8Library
                 updateLobby();
             }
         }
+
+        public void LockServer()
+        {
+            canJoin = false;
+        }
+
+        public void UnlockServer()
+        {
+            canJoin = true;
+        }
+
         public Deck()
         {
             objNum = ++objCount;
@@ -73,6 +88,8 @@ namespace Crazy8Library
             // Initialize member variables
             cards = new List<Card>();
             userCallBacks = new Dictionary<string, ICallBack>();
+            currentSuit = 0;
+            currentRank = 0;
             Repopulate();
         }
 
@@ -83,8 +100,6 @@ namespace Crazy8Library
                 throw new System.IndexOutOfRangeException("The Deck is empty.");
 
             Card card = cards[cardIdx++];
-
-            updateAllClients(false);
 
             Console.WriteLine("[Game #" + objNum + "] Dealing " + card);
 
@@ -113,8 +128,36 @@ namespace Crazy8Library
 
             Random rng = new Random();
             cards = cards.OrderBy(number => rng.Next()).ToList();
+            cardIdx = 0;
+        }
 
+        public void NewGame()
+        {
 
+            Random rng = new Random();
+            cards = cards.OrderBy(number => rng.Next()).ToList();
+            cardIdx = 0;
+        }
+
+        public bool PlaceDown()
+        {
+            if(cardIdx > cards.Count - 1){return false;}
+            cardIdx++;
+            currentSuit = (int)cards[cardIdx].Suit;
+            currentRank = (int)cards[cardIdx].Rank;
+            updateAllClients(currentSuit,currentRank,false,false);
+            return true;
+        }
+
+        public bool PlaceDown(int suit,int rank)
+        {
+            //compare with current suit and rank to see if it can be placed down.
+            if (suit != currentSuit && rank != currentRank) {  }
+            //for now assume that all is good.
+            currentSuit = suit;
+            currentRank = rank;
+            updateAllClients(currentSuit,currentRank,false,false);
+            return true;
         }
 
         private void updateLobby()
@@ -126,9 +169,13 @@ namespace Crazy8Library
             }
         }
 
-        private void updateAllClients(bool emptyHand)
+        private void updateAllClients(int suit,int rank,bool empty,bool draw)
         {
-
+            CallbackInfo info = new CallbackInfo(suit, rank, empty, draw);
+            foreach (ICallBack cb in userCallBacks.Values)
+            {
+                cb.UpdateGui(info);
+            }
         }
     }
 }
