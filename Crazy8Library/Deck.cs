@@ -218,7 +218,7 @@ namespace Crazy8Library
 
         private void updateAllClients(string winner, bool start)
         {
-            CallbackInfo info = new CallbackInfo(userCallBacks.Count, userCallBacks.Values.ToArray(), turnManager[currentTurn], currentAdmin, winner, currentSuit, currentRank, start);
+            CallbackInfo info = new CallbackInfo(userCallBacks.Count, userCallBacks.Values.ToList(), turnManager[currentTurn], currentAdmin, winner, currentSuit, currentRank, start);
             foreach (Player player in userCallBacks.Values)
             {
                 player.PlayerCallBack.UpdateGui(info);

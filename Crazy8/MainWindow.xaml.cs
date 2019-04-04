@@ -62,8 +62,26 @@ namespace Crazy8
                 lbPlayerHand.Items.Add(PlayerHand[i]);
 
             }
+            PlayerBotton.Content = PlayerName;
             
+        }
+        private void UpdateOtherPlayersCard(List<Player> AllPlayers) {
+            AllPlayers.Remove(AllPlayers.Find(a => a.Name==PlayerName));
+            if (AllPlayers.Count < 2) { PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand; }
+            else if (AllPlayers.Count < 3)
+            {
+                PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand;
+                PlayerRight.Content = AllPlayers.ElementAt(1).Name + ": " + AllPlayers.ElementAt(1).CardsInHand;
+            }
+            else
+            {
+                PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand;
+                PlayerRight.Content = AllPlayers.ElementAt(1).Name + ": " + AllPlayers.ElementAt(1).CardsInHand;
+                PlayerLeft.Content = AllPlayers.ElementAt(2).Name + ": " + AllPlayers.ElementAt(2).CardsInHand;
+            }
             
+
+
         }
         private delegate void ClientUpdateDelegate(CallbackInfo info);
         public void UpdateGui(CallbackInfo info)
@@ -71,8 +89,8 @@ namespace Crazy8
             if (System.Threading.Thread.CurrentThread == this.Dispatcher.Thread)
             {
                 if (info.StartGame) { lobby.Hide();}
-                
-                lobby.UpdateLobby(info.numPlayers,info.playerNames,info.Administrator);
+                UpdateOtherPlayersCard(info.AllPlayers);
+                lobby.UpdateLobby(info.numPlayers,info.AllPlayers,info.Administrator);
             }
             else
             {

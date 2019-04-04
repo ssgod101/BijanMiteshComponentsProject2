@@ -7,10 +7,11 @@
         mc:Ignorable="d" Closing="Window_Closing"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Label x:Name="PlayerLeft" FontSize="22" FontWeight="DemiBold" ></Label>
-        <Label x:Name="PlayerRight" FontSize="22" FontWeight="DemiBold" ></Label>
-        <Label x:Name="PlayerTop" FontSize="22" FontWeight="DemiBold" ></Label>
-        <ListBox x:Name="lbPlayerHand" HorizontalAlignment="Left" Height="101" Margin="154,308,0,0" VerticalAlignment="Top" Width="474"/>
+        <Label x:Name="PlayerLeft" Content="" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="70,161,547,189" Width="175" Height="69" ></Label>
+        <Label x:Name="PlayerRight" Content="" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="557,161,64,176" Width="171" Height="82"></Label>
+        <Label x:Name="PlayerTop" Content="" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="305,10,280,337" Width="207" Height="72"></Label>
+        <Label x:Name="PlayerBotton" Content="" FontSize="22" FontWeight="DemiBold" Margin="305,368,280,0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="207" Height="51" ></Label>
+        <ListBox x:Name="lbPlayerHand" HorizontalAlignment="Left" Height="101" Margin="149,235,0,0" VerticalAlignment="Top" Width="474"/>
 
     </Grid>
 </Window>

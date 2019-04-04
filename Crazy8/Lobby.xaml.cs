@@ -67,15 +67,15 @@ namespace Crazy8
                 }
             }
         }
-        public void UpdateLobby(int numPlayers,string[] playerNames,string admin) {
+        public void UpdateLobby(int numPlayers,List<Player> playerNames,string admin) {
            
             if (name != admin) {Play.Content = "Wait for Admin"; }
             Players.Content = numPlayers;
             lbNames.Items.Clear(); 
-            foreach (string s in playerNames)
+            foreach (Player player in playerNames)
             {
-                if (s == admin) { lbNames.Items.Add(admin + " (Admin)"); }
-                else { lbNames.Items.Add(s); }
+                if (player.Name == admin) { lbNames.Items.Add(admin + " (Admin)"); }
+                else { lbNames.Items.Add(player.Name); }
                 
             }
         }
