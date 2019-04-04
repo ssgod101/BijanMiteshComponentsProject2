@@ -54,9 +54,8 @@ namespace Crazy8
             Environment.Exit(0);
         }
         private void NewGame() {
+
             PlayerHand = new List<Card>();
-
-
             for (int i = 0; i < 5; i++)
             {
                 PlayerHand.Add(deck.DrawSingle(PlayerName));
@@ -71,7 +70,8 @@ namespace Crazy8
         {
             if (System.Threading.Thread.CurrentThread == this.Dispatcher.Thread)
             {
-               
+                if (info.StartGame) { lobby.Hide();}
+                
                 lobby.UpdateLobby(info.numPlayers,info.playerNames,info.Administrator);
             }
             else
