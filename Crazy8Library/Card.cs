@@ -24,7 +24,7 @@ namespace Crazy8Library
 
         public override string ToString()
         {
-            return Rank.ToString() + " of " + Suit.ToString();
+            return Rank.ToString() + "_" + Suit.ToString();
         }
 
         // Constructor

@@ -46,7 +46,11 @@ namespace Crazy8
             NewGame();
 
         }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
 
+            Environment.Exit(0);
+        }
         private void NewGame() {
             PlayerHand = new List<Card>();
 
@@ -58,7 +62,9 @@ namespace Crazy8
             foreach (var item in PlayerHand)
             {
                 lbPlayerHand.Items.Add(item.ToString());
+              
             }
+            
             
         }
         private delegate void ClientUpdateDelegate(CallbackInfo info);
