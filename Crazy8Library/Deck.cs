@@ -27,7 +27,8 @@ namespace Crazy8Library
     {
         [OperationContract] bool Join(string name);
         [OperationContract(IsOneWay = true)] void Leave(string name);
-        [OperationContract] Card Draw(string name);
+        [OperationContract] Card[] Draw(string name, int amount);
+        [OperationContract] Card DrawSingle(string name);
     }
     //------------------------------------------------------------------
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
@@ -94,18 +95,27 @@ namespace Crazy8Library
             Repopulate();
         }
 
-        public Card Draw(string name)
+        public Card[] Draw(string name, int amount)
         {
-            if (cardIdx >= cards.Count){Shuffle();}
-
+            Card[] cardsToGive = new Card[amount];
+            for (int i = 0; i < amount; i++)
+            {
+                if (cardIdx >= cards.Count) { Shuffle(); }
+                Card card = cards[cardIdx++];
+                userCallBacks[name].CardsInHand++;
+                Console.WriteLine("[Game #" + objNum + "] Dealing " + card);
+                cardsToGive[i] = card;
+            }
+            return cardsToGive;
+        }
+        public Card DrawSingle(string name)
+        {
+            if (cardIdx >= cards.Count) { Shuffle(); }
             Card card = cards[cardIdx++];
-
+            userCallBacks[name.ToUpper()].CardsInHand++;
             Console.WriteLine("[Game #" + objNum + "] Dealing " + card);
-            userCallBacks[name].CardsInHand++;
-
             return card;
         }
-
         void Repopulate()
         {
             cards.Clear();

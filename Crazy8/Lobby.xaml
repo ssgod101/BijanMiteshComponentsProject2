@@ -24,6 +24,6 @@
         <Button x:Name="Play" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" FontSize="26" Content="PLAY" Margin="100,50" Click="Play_Click" IsEnabled="False" />
         <Button x:Name="Exit" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" FontSize="26" Content="EXIT" Margin="100,50" Click="Exit_Click" />
         <Button x:Name="Help" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" FontSize="16" Content="Help ?" Margin="10,10,336,105" />
-        <ListBox x:Name="lbNames" Background="#FFC4E6F5" FontSize="22" FontWeight="SemiBold" FontStyle="Italic" Grid.Column="1" HorizontalAlignment="Left" Height="100" Margin="100,10,0,0" VerticalAlignment="Top" Width="290"/>
+        <ListBox x:Name="lbNames" Background="#FFC4E6F5" FontSize="22" FontWeight="SemiBold" FontStyle="Italic" Grid.Column="1" HorizontalAlignment="Left" Height="147"  Margin="100,10,0,0" VerticalAlignment="Top" Width="290" Grid.RowSpan="2" Focusable="False" IsTextSearchEnabled="False" ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" BorderThickness="0"/>
     </Grid>
 </Window>
