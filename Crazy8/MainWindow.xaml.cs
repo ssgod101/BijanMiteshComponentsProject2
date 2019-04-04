@@ -46,7 +46,6 @@ namespace Crazy8
             lobby.ShowDialog();
             PlayerName = lobby.name;
             NewGame();
-
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -71,7 +70,7 @@ namespace Crazy8
         {
             if (System.Threading.Thread.CurrentThread == this.Dispatcher.Thread)
             {
-                lobby.UpdateLobby(info.numPlayers,info.playerNames,info.admin);
+                lobby.UpdateLobby(info.numPlayers,info.playerNames,info.Administrator);
             }
             else
             {
