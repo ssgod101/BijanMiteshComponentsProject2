@@ -27,6 +27,7 @@ namespace Crazy8
         private IDeck deck = null;
         private Lobby lobby = null;
         private List<Card> PlayerHand;
+        private string PlayerName="";
         public MainWindow()
         {
             InitializeComponent();
@@ -43,31 +44,34 @@ namespace Crazy8
             }
              lobby = new Lobby(ref deck);
             lobby.ShowDialog();
-            //NewGame();
+            PlayerName = lobby.name;
+            NewGame();
 
         }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
 
-        //private void NewGame()
-        //{
-        //    PlayerHand = new List<Card>();
+            Environment.Exit(0);
+        }
+        private void NewGame() {
+            PlayerHand = new List<Card>();
 
-        //    for (int i = 0; i < 5; i++)
-        //    {
-        //        PlayerHand.Add(deck.Draw("", 0));
 
-        //    }
-        //    foreach (var item in PlayerHand)
-        //    {
-        //        lbPlayerHand.Items.Add(item.ToString());
-        //    }
+            for (int i = 0; i < 5; i++)
+            {
+                PlayerHand.Add(deck.DrawSingle(PlayerName));
+                lbPlayerHand.Items.Add(PlayerHand[i]);
 
-        //}
+            }
+            
+            
+        }
         private delegate void ClientUpdateDelegate(CallbackInfo info);
         public void UpdateGui(CallbackInfo info)
         {
             if (System.Threading.Thread.CurrentThread == this.Dispatcher.Thread)
             {
-                lobby.UpdateLobby(info.numPlayers,info.playerNames);
+                lobby.UpdateLobby(info.numPlayers,info.playerNames,info.admin);
             }
             else
             {

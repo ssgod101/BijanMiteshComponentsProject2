@@ -19,11 +19,11 @@ namespace Crazy8
     /// <summary>
     /// Interaction logic for Lobby.xaml
     /// </summary>
-   // [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant, UseSynchronizationContext = false)]
+
     public partial class Lobby : Window//,ICallBack
     {
         private IDeck deck = null;
-        private string name = "";
+        public string name = "";
         public Lobby(ref IDeck d)
         {
             InitializeComponent();
@@ -33,13 +33,13 @@ namespace Crazy8
 
         private void Join_Click(object sender, RoutedEventArgs e)
         {
-            name = tbName.Text;
-            if (deck.Join(name))
+            name = tbName.Text.ToUpper();
+            if (name!=""&& deck.Join(name))
             {
                 Play.IsEnabled = true;
                 Join.IsEnabled = false;
             }
-            else { MessageBox.Show(name + " was not able to join game.","",MessageBoxButton.OK,MessageBoxImage.Error); }
+            else { MessageBox.Show(name + "Player was not able to join game.","",MessageBoxButton.OK,MessageBoxImage.Error); }
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
@@ -50,7 +50,7 @@ namespace Crazy8
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-           
+            deck.Leave(name);
             Environment.Exit(0);
         }
 
@@ -59,32 +59,16 @@ namespace Crazy8
             this.Hide();
 
         }
-        public void UpdateLobby(int numPlayers,string[] playerNames) {
+        public void UpdateLobby(int numPlayers,string[] playerNames,string admin) {
             Players.Content = numPlayers;
-            lbNames.Items.Clear();
+            lbNames.Items.Clear(); 
             foreach (string s in playerNames)
             {
-                lbNames.Items.Add(s);
+                if (s == admin) { lbNames.Items.Add(admin + "(Admin)"); }
+                else { lbNames.Items.Add(s); }
+                
             }
         }
-        // Implement ICallback contract
-       // private delegate void ClientUpdateDelegate(CallbackInfo info);
-
-        //public void UpdateGui(CallbackInfo info)
-        //{
-        //    if (System.Threading.Thread.CurrentThread == this.Dispatcher.Thread)
-        //    {
-        //        Players.Content = info.numPlayers;
-        //        lbNames.Items.Clear();
-        //        foreach (string s in info.playerNames) {
-        //            lbNames.Items.Add(s);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // Only the main (dispatcher) thread can change the GUI
-        //        this.Dispatcher.BeginInvoke(new ClientUpdateDelegate(UpdateGui), info);
-        //    }
-        //}
+      
     }
 }
