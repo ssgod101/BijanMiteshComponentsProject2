@@ -31,6 +31,9 @@ namespace Crazy8Library
         [OperationContract] Card DrawSingle(string name);
         [OperationContract] bool PlaceDown(string name,int suit, int rank);
         [OperationContract] bool NewGame(string name);
+        [OperationContract] bool EndTurn(string name);
+        [OperationContract] bool LockServer(string name);
+        [OperationContract] bool UnlockServer(string name);
     }
     //------------------------------------------------------------------
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
@@ -55,7 +58,7 @@ namespace Crazy8Library
 
         public bool Join(string name)
         {
-            if (userCallBacks.Count >= 4 || userCallBacks.ContainsKey(name) || !canJoin)
+            if (userCallBacks.Count >= 4 || userCallBacks.ContainsKey(name) || name=="" || !canJoin)
             {
                 return false;
             }
@@ -88,14 +91,16 @@ namespace Crazy8Library
         }
 
         //Admin functions
-        public bool LockServer()
+        public bool LockServer(string name)
         {
+            if (currentAdmin != name) { return false; }
             canJoin = false;
             return true;
         }
 
-        public bool UnlockServer()
+        public bool UnlockServer(string name)
         {
+            if (currentAdmin != name) { return false; }
             canJoin = true;
             return true;
         }
@@ -122,6 +127,8 @@ namespace Crazy8Library
             // Initialize member variables
             cards = new List<Card>();
             userCallBacks = new Dictionary<string, Player>();
+            turnManager = new List<string>();
+            currentTurn = 0;
             currentSuit = 0;
             currentRank = 0;
             Repopulate();
@@ -147,15 +154,17 @@ namespace Crazy8Library
             Card card = cards[cardIdx++];
             userCallBacks[name].CardsInHand++;
             Console.WriteLine("[Game #" + objNum + "] Dealing " + card);
+            updateAllClients("",false);
             return card;
         }
 
-        public bool EndTurn()
+        public bool EndTurn(string name)
         {
+            if (turnManager[currentTurn] != name) { return false; }
             currentTurn++;
             if (currentTurn >= turnManager.Count) { currentTurn = 0; }
-            //updateAllClients();
-            return false;
+            updateAllClients("",false);
+            return true;
         }
 
         void Repopulate()
@@ -209,7 +218,7 @@ namespace Crazy8Library
 
         private void updateAllClients(string winner, bool start)
         {
-            CallbackInfo info = new CallbackInfo(userCallBacks.Count, userCallBacks.Keys.ToArray(), turnManager[currentTurn], currentAdmin, winner, currentSuit, currentRank, start);
+            CallbackInfo info = new CallbackInfo(userCallBacks.Count, userCallBacks.Values.ToArray(), turnManager[currentTurn], currentAdmin, winner, currentSuit, currentRank, start);
             foreach (Player player in userCallBacks.Values)
             {
                 player.PlayerCallBack.UpdateGui(info);
