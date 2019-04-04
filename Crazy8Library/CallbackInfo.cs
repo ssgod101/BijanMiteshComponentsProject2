@@ -20,9 +20,9 @@ namespace Crazy8Library
 
         //Lobby Info
         [DataMember] public int numPlayers { get; private set; }
-        [DataMember] public string[] playerNames { get; private set; }
+        [DataMember] public Player[] playerNames { get; private set; }
 
-        public CallbackInfo(int num, string[] names,string turn,string admin, string win,int topS, int topR, bool start)
+        public CallbackInfo(int num, Player[] players,string turn,string admin, string win,int topS, int topR, bool start)
         {
             Administrator = admin;
             Winner = win;
@@ -30,7 +30,7 @@ namespace Crazy8Library
             TopRank = topR;
             StartGame = start;
             numPlayers = num;
-            playerNames = names;
+            playerNames = players;
             CurrentTurn = turn;
         }
     }

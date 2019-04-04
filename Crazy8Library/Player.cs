@@ -8,12 +8,12 @@ namespace Crazy8Library
 {
     public class Player
     {
-        public ICallBack PlayerCallBack { get; set; }
+        internal ICallBack PlayerCallBack { get; set; }
         public string Name { get; set; }
-        public bool Turn { get; set; }
+        internal bool Turn { get; set; }
         public int CardsInHand { get; set; }
-        public bool IsHost { get; set; }
-        public Player(string n, ICallBack callBack)
+        internal bool IsHost { get; set; }
+        internal Player(string n, ICallBack callBack)
         {
             Name = n;
             PlayerCallBack = callBack;
