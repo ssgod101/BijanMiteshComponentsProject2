@@ -122,6 +122,7 @@ namespace Crazy8Library
             // Initialize member variables
             cards = new List<Card>();
             userCallBacks = new Dictionary<string, Player>();
+            turnManager = new List<string>();
             currentSuit = 0;
             currentRank = 0;
             Repopulate();

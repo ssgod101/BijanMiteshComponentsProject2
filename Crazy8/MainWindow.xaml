@@ -7,7 +7,10 @@
         mc:Ignorable="d" Closing="Window_Closing"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListBox x:Name="lbPlayerHand" HorizontalAlignment="Left" Height="193" Margin="154,67,0,0" VerticalAlignment="Top" Width="474"/>
+        <Label x:Name="PlayerLeft" FontSize="22" FontWeight="DemiBold" ></Label>
+        <Label x:Name="PlayerRight" FontSize="22" FontWeight="DemiBold" ></Label>
+        <Label x:Name="PlayerTop" FontSize="22" FontWeight="DemiBold" ></Label>
+        <ListBox x:Name="lbPlayerHand" HorizontalAlignment="Left" Height="101" Margin="154,308,0,0" VerticalAlignment="Top" Width="474"/>
 
     </Grid>
 </Window>
