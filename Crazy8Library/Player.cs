@@ -12,6 +12,7 @@ namespace Crazy8Library
         public string Name { get; set; }
         public bool Turn { get; set; }
         public int CardsInHand { get; set; }
+        public bool IsHost { get; set; }
         public Player(string n, ICallBack callBack)
         {
             Name = n;

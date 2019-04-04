@@ -15,21 +15,23 @@ namespace Crazy8Library
         [DataMember] public int topRank { get; private set; }
         [DataMember] public bool emptyHand { get; private set; }
         [DataMember] public bool drawHand { get; private set; }
+        [DataMember] public string Administrator { get; private set; }
 
         //Lobby Info
         [DataMember] public int numPlayers { get; private set; }
         [DataMember] public string[] playerNames { get; private set; }
 
-        public CallbackInfo(int topS, int topR, bool empty, bool draw)
+        public CallbackInfo(string admin, int topS, int topR, bool empty)
         {
+            Administrator = admin;
             topSuit = topS;
             topRank = topR;
             emptyHand = empty;
-            drawHand = draw;
         }
 
-        public CallbackInfo(int num, string[] names)
+        public CallbackInfo(int num, string[] names,string admin)
         {
+            Administrator = admin;
             numPlayers = num;
             playerNames = names;
         }

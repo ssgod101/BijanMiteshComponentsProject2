@@ -27,7 +27,9 @@ namespace Crazy8Library
     {
         [OperationContract] bool Join(string name);
         [OperationContract(IsOneWay = true)] void Leave(string name);
-        [OperationContract] Card Draw(string name);
+        [OperationContract] Card[] Draw(string name, int amount);
+        [OperationContract] Card DrawSingle(string name);
+        [OperationContract] bool PlaceDown(string name,int suit, int rank);
     }
     //------------------------------------------------------------------
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
@@ -41,13 +43,16 @@ namespace Crazy8Library
 
         private int currentSuit;
         private int currentRank;
+        private string currentAdmin;
 
         // Member variables related to the callbacks
         private Dictionary<string, Player> userCallBacks;
 
+        //Lobby Functionality
+
         public bool Join(string name)
-        { 
-            if(userCallBacks.Count >= 4 || userCallBacks.ContainsKey(name.ToUpper()) || !canJoin)
+        {
+            if (userCallBacks.Count >= 4 || userCallBacks.ContainsKey(name) || !canJoin)
             {
                 return false;
             }
@@ -56,17 +61,19 @@ namespace Crazy8Library
                 ICallBack cb = OperationContext.Current.GetCallbackChannel<ICallBack>();
                 Player newPlayer = new Player(name, cb);
                 Console.WriteLine(name + " has joined!");
-                userCallBacks.Add(name.ToUpper(),newPlayer);
+                userCallBacks.Add(name, newPlayer);
                 updateLobby();
+                userCallBacks[name].IsHost = userCallBacks.Count == 1;
+                if (userCallBacks[name].IsHost) { currentAdmin = name; }
                 return true;
             }
         }
         public void Leave(string name)
         {
-            if (userCallBacks.ContainsKey(name.ToUpper()))
+            if (userCallBacks.ContainsKey(name))
             {
                 Console.WriteLine(name + " has left!");
-                userCallBacks.Remove(name.ToUpper());
+                userCallBacks.Remove(name);
                 updateLobby();
             }
         }
@@ -94,15 +101,26 @@ namespace Crazy8Library
             Repopulate();
         }
 
-        public Card Draw(string name)
+        public Card[] Draw(string name, int amount)
         {
-            if (cardIdx >= cards.Count){Shuffle();}
+            Card[] cardsToGive = new Card[amount];
+            for (int i = 0; i < amount; i++)
+            {
+                if (cardIdx >= cards.Count) { Shuffle(); }
+                Card card = cards[cardIdx++];
+                userCallBacks[name].CardsInHand++;
+                Console.WriteLine("[Game #" + objNum + "] Dealing " + card);
+                cardsToGive[i] = card;
+            }
+            return cardsToGive;
+        }
 
+        public Card DrawSingle(string name)
+        {
+            if (cardIdx >= cards.Count) { Shuffle(); }
             Card card = cards[cardIdx++];
-
-            Console.WriteLine("[Game #" + objNum + "] Dealing " + card);
             userCallBacks[name].CardsInHand++;
-
+            Console.WriteLine("[Game #" + objNum + "] Dealing " + card);
             return card;
         }
 
@@ -125,15 +143,13 @@ namespace Crazy8Library
         }
         public void Shuffle()
         {
-
             Random rng = new Random();
             cards = cards.OrderBy(number => rng.Next()).ToList();
             cardIdx = 0;
         }
 
-        public void NewGame()
+        public void NewGame(string name)
         {
-
             Random rng = new Random();
             cards = cards.OrderBy(number => rng.Next()).ToList();
             cardIdx = 0;
@@ -141,38 +157,48 @@ namespace Crazy8Library
 
         public bool PlaceDownFromDeck()
         {
-            if(cardIdx > cards.Count - 1){return false;}
-            cardIdx++;
+            if (cardIdx > cards.Count - 1) { return false; }
             currentSuit = (int)cards[cardIdx].Suit;
             currentRank = (int)cards[cardIdx].Rank;
-            updateAllClients(currentSuit,currentRank,false,false);
+            cardIdx++;
+            updateAllClients(currentSuit, currentRank, false);
             return true;
         }
 
-        public bool PlaceDown(string name,int suit,int rank)
+        public bool PlaceDown(string name, int suit, int rank)
         {
-            //compare with current suit and rank to see if it can be placed down.
-            if ((suit != currentSuit && rank != currentRank) || cardIdx > cards.Count - 1) { return false;  }
-            //for now assume that all is good.
+            if ((suit != currentSuit && rank != currentRank) || cardIdx > cards.Count - 1) { return false; }
             currentSuit = suit;
             currentRank = rank;
             userCallBacks[name].CardsInHand--;
-            updateAllClients(currentSuit,currentRank,false,false);
+            if (CheckWinner(name))
+            {
+
+            }
+            updateAllClients(currentSuit, currentRank, false);
             return true;
         }
 
+        bool CheckWinner(string name)
+        {
+            return userCallBacks[name].CardsInHand == 0;
+        }
+
+
+        //CallBack functions
+
         private void updateLobby()
         {
-            CallbackInfo info = new CallbackInfo(userCallBacks.Count,userCallBacks.Keys.ToArray());
-            foreach(Player player in userCallBacks.Values)
+            CallbackInfo info = new CallbackInfo(userCallBacks.Count, userCallBacks.Keys.ToArray(),currentAdmin);
+            foreach (Player player in userCallBacks.Values)
             {
                 player.PlayerCallBack.UpdateGui(info);
             }
         }
 
-        private void updateAllClients(int suit,int rank,bool empty,bool draw)
+        private void updateAllClients(int suit, int rank, bool empty)
         {
-            CallbackInfo info = new CallbackInfo(suit, rank, empty, draw);
+            CallbackInfo info = new CallbackInfo(currentAdmin, suit, rank, empty);
             foreach (Player player in userCallBacks.Values)
             {
                 player.PlayerCallBack.UpdateGui(info);

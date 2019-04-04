@@ -43,24 +43,25 @@ namespace Crazy8
             }
              lobby = new Lobby(ref deck);
             lobby.ShowDialog();
-            NewGame();
+            //NewGame();
 
         }
 
-        private void NewGame() {
-            PlayerHand = new List<Card>();
+        //private void NewGame()
+        //{
+        //    PlayerHand = new List<Card>();
 
-            for (int i = 0; i < 5; i++)
-            {
-                PlayerHand.Add(deck.Draw(""));
-                
-            }
-            foreach (var item in PlayerHand)
-            {
-                lbPlayerHand.Items.Add(item.ToString());
-            }
-            
-        }
+        //    for (int i = 0; i < 5; i++)
+        //    {
+        //        PlayerHand.Add(deck.Draw("", 0));
+
+        //    }
+        //    foreach (var item in PlayerHand)
+        //    {
+        //        lbPlayerHand.Items.Add(item.ToString());
+        //    }
+
+        //}
         private delegate void ClientUpdateDelegate(CallbackInfo info);
         public void UpdateGui(CallbackInfo info)
         {
