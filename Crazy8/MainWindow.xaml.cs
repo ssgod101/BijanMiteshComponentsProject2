@@ -71,7 +71,8 @@ namespace Crazy8
         {
             if (System.Threading.Thread.CurrentThread == this.Dispatcher.Thread)
             {
-                lobby.UpdateLobby(info.numPlayers,info.playerNames,info.admin);
+               
+                lobby.UpdateLobby(info.numPlayers,info.playerNames,info.Administrator);
             }
             else
             {

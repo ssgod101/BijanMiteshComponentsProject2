@@ -30,6 +30,7 @@ namespace Crazy8Library
         [OperationContract] Card[] Draw(string name, int amount);
         [OperationContract] Card DrawSingle(string name);
         [OperationContract] bool PlaceDown(string name,int suit, int rank);
+        [OperationContract] bool NewGame(string name);
     }
     //------------------------------------------------------------------
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
@@ -62,9 +63,11 @@ namespace Crazy8Library
                 Player newPlayer = new Player(name, cb);
                 Console.WriteLine(name + " has joined!");
                 userCallBacks.Add(name, newPlayer);
-                updateLobby();
                 userCallBacks[name].IsHost = userCallBacks.Count == 1;
                 if (userCallBacks[name].IsHost) { currentAdmin = name; }
+
+                updateLobby();
+            
                 return true;
             }
         }
@@ -148,20 +151,15 @@ namespace Crazy8Library
             cardIdx = 0;
         }
 
-        public void NewGame(string name)
+        public bool NewGame(string name)
         {
-            Random rng = new Random();
-            cards = cards.OrderBy(number => rng.Next()).ToList();
-            cardIdx = 0;
-        }
-
-        public bool PlaceDownFromDeck()
-        {
-            if (cardIdx > cards.Count - 1) { return false; }
+            if (currentAdmin != name) { return false; }
+            Shuffle();
+            currentTurn = 0;
             currentSuit = (int)cards[cardIdx].Suit;
             currentRank = (int)cards[cardIdx].Rank;
             cardIdx++;
-            updateAllClients(currentSuit, currentRank, false);
+            updateAllClients("", true);
             return true;
         }
 

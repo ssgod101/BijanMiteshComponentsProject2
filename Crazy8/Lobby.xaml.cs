@@ -24,6 +24,7 @@ namespace Crazy8
     {
         private IDeck deck = null;
         public string name = "";
+       
         public Lobby(ref IDeck d)
         {
             InitializeComponent();
@@ -39,7 +40,7 @@ namespace Crazy8
                 Play.IsEnabled = true;
                 Join.IsEnabled = false;
             }
-            else { MessageBox.Show(name + "Player was not able to join game.","",MessageBoxButton.OK,MessageBoxImage.Error); }
+            else { MessageBox.Show(name + " Player was not able to join game.","",MessageBoxButton.OK,MessageBoxImage.Error); }
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
@@ -56,19 +57,32 @@ namespace Crazy8
 
         private void Play_Click(object sender, RoutedEventArgs e)
         {
-            this.Hide();
-
+            if (Play.Content.ToString() != "PLAY") { MessageBox.Show("Wait for Admin to start the game."); }
+            else
+            {
+                if (int.Parse(Players.Content.ToString()) < 2) { MessageBox.Show("Wait for another player"); }
+                else
+                {
+                    deck.NewGame(name);
+                }
+            }
         }
         public void UpdateLobby(int numPlayers,string[] playerNames,string admin) {
+           
+            if (name != admin) {Play.Content = "Wait for Admin"; }
             Players.Content = numPlayers;
             lbNames.Items.Clear(); 
             foreach (string s in playerNames)
             {
-                if (s == admin) { lbNames.Items.Add(admin + "(Admin)"); }
+                if (s == admin) { lbNames.Items.Add(admin + " (Admin)"); }
                 else { lbNames.Items.Add(s); }
                 
             }
         }
-      
+
+        private void Help_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Help instructions.......", "Crazy 8 Manual", MessageBoxButton.OK);
+        }
     }
 }
