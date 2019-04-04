@@ -13,7 +13,7 @@ namespace Crazy8Library
         internal ICallBack PlayerCallBack { get; set; }
         [DataMember]public string Name { get; set; }
         internal bool Turn { get; set; }
-        [DataMember]public int CardsInHand { get; set; }
+        [DataMember] public int CardsInHand { get; set; }
         internal bool IsHost { get; set; }
         internal Player(string n, ICallBack callBack)
         {
