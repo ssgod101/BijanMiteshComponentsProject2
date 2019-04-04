@@ -27,7 +27,7 @@ namespace Crazy8Library
     {
         [OperationContract] bool Join(string name);
         [OperationContract(IsOneWay = true)] void Leave(string name);
-        [OperationContract] Card Draw();
+        [OperationContract] Card Draw(string name);
     }
     //------------------------------------------------------------------
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
@@ -43,7 +43,7 @@ namespace Crazy8Library
         private int currentRank;
 
         // Member variables related to the callbacks
-        private Dictionary<string, ICallBack> userCallBacks;
+        private Dictionary<string, Player> userCallBacks;
 
         public bool Join(string name)
         { 
@@ -54,8 +54,9 @@ namespace Crazy8Library
             else
             {
                 ICallBack cb = OperationContext.Current.GetCallbackChannel<ICallBack>();
+                Player newPlayer = new Player(name, cb);
                 Console.WriteLine(name + " has joined!");
-                userCallBacks.Add(name.ToUpper(),cb);
+                userCallBacks.Add(name.ToUpper(),newPlayer);
                 updateLobby();
                 return true;
             }
@@ -87,21 +88,20 @@ namespace Crazy8Library
 
             // Initialize member variables
             cards = new List<Card>();
-            userCallBacks = new Dictionary<string, ICallBack>();
+            userCallBacks = new Dictionary<string, Player>();
             currentSuit = 0;
             currentRank = 0;
             Repopulate();
         }
 
-        public Card Draw()
+        public Card Draw(string name)
         {
-            if (cardIdx >= cards.Count)
-                // No cards remaining to be drawn
-                throw new System.IndexOutOfRangeException("The Deck is empty.");
+            if (cardIdx >= cards.Count){Shuffle();}
 
             Card card = cards[cardIdx++];
 
             Console.WriteLine("[Game #" + objNum + "] Dealing " + card);
+            userCallBacks[name].CardsInHand++;
 
             return card;
         }
@@ -139,7 +139,7 @@ namespace Crazy8Library
             cardIdx = 0;
         }
 
-        public bool PlaceDown()
+        public bool PlaceDownFromDeck()
         {
             if(cardIdx > cards.Count - 1){return false;}
             cardIdx++;
@@ -149,13 +149,14 @@ namespace Crazy8Library
             return true;
         }
 
-        public bool PlaceDown(int suit,int rank)
+        public bool PlaceDown(string name,int suit,int rank)
         {
             //compare with current suit and rank to see if it can be placed down.
-            if (suit != currentSuit && rank != currentRank) {  }
+            if ((suit != currentSuit && rank != currentRank) || cardIdx > cards.Count - 1) { return false;  }
             //for now assume that all is good.
             currentSuit = suit;
             currentRank = rank;
+            userCallBacks[name].CardsInHand--;
             updateAllClients(currentSuit,currentRank,false,false);
             return true;
         }
@@ -163,18 +164,18 @@ namespace Crazy8Library
         private void updateLobby()
         {
             CallbackInfo info = new CallbackInfo(userCallBacks.Count,userCallBacks.Keys.ToArray());
-            foreach(ICallBack cb in userCallBacks.Values)
+            foreach(Player player in userCallBacks.Values)
             {
-                cb.UpdateGui(info);
+                player.PlayerCallBack.UpdateGui(info);
             }
         }
 
         private void updateAllClients(int suit,int rank,bool empty,bool draw)
         {
             CallbackInfo info = new CallbackInfo(suit, rank, empty, draw);
-            foreach (ICallBack cb in userCallBacks.Values)
+            foreach (Player player in userCallBacks.Values)
             {
-                cb.UpdateGui(info);
+                player.PlayerCallBack.UpdateGui(info);
             }
         }
     }

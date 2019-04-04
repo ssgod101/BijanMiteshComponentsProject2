@@ -52,7 +52,7 @@ namespace Crazy8
 
             for (int i = 0; i < 5; i++)
             {
-                PlayerHand.Add(deck.Draw());
+                PlayerHand.Add(deck.Draw(""));
                 
             }
             foreach (var item in PlayerHand)
