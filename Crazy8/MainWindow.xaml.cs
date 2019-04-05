@@ -126,7 +126,11 @@ namespace Crazy8
                 Enum.TryParse(splitResult[1], out Card.SuitID suit);
                 if (rank == Card.RankID.Eight)
                 {
+
                     PickSuit();
+                    PlayerHand.Remove(PlayerHand.Find(c => c.Rank == rank && c.Suit == suit));
+                    MakeBtnCardOnScreen();
+                    
                 }
                 else
                 {
@@ -286,8 +290,7 @@ namespace Crazy8
             Enum.TryParse(splitResult[0], out Card.RankID rank);
             Enum.TryParse(splitResult[1], out Card.SuitID suit);
             deck.PlaceDown(PlayerName,new Card(suit,rank));
-            PlayerHand.Remove(PlayerHand.Find(c => c.Rank == rank && c.Suit == suit));
-            MakeBtnCardOnScreen();
+
             pickedOne = false;
             gotNumberTwo = false;
 
