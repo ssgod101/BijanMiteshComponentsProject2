@@ -29,11 +29,11 @@ namespace Crazy8Library
         [OperationContract(IsOneWay = true)] void Leave(string name);
         [OperationContract] Card[] Draw(string name, int amount);
         [OperationContract] Card DrawSingle(string name);
-        [OperationContract] bool PlaceDown(string name,int suit, int rank);
+        [OperationContract] bool PlaceDown(string name,Card placed);
         [OperationContract] bool NewGame(string name);
         [OperationContract] bool EndTurn(string name);
-        [OperationContract] bool LockServer(string name);
-        [OperationContract] bool UnlockServer(string name);
+        //[OperationContract] bool LockServer(string name);
+        //[OperationContract] bool UnlockServer(string name);
     }
     //------------------------------------------------------------------
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
@@ -47,8 +47,10 @@ namespace Crazy8Library
 
         private int currentSuit;
         private int currentRank;
+        private Card TopCard;
         private string currentAdmin;
         private int currentTurn;
+        private int TwoChain;
 
         // Member variables related to the callbacks
         private Dictionary<string, Player> userCallBacks;
@@ -91,16 +93,15 @@ namespace Crazy8Library
         }
 
         //Admin functions
-        public bool LockServer(string name)
+        private bool LockServer(string name)
         {
             if (currentAdmin != name) { return false; }
             canJoin = false;
             return true;
         }
 
-        public bool UnlockServer(string name)
+        public bool UnlockServer()
         {
-            if (currentAdmin != name) { return false; }
             canJoin = true;
             return true;
         }
@@ -108,10 +109,10 @@ namespace Crazy8Library
         public bool NewGame(string name)
         {
             if (currentAdmin != name) { return false; }
+            LockServer(name);
             Shuffle();
             currentTurn = 0;
-            currentSuit = (int)cards[cardIdx].Suit;
-            currentRank = (int)cards[cardIdx].Rank;
+            TopCard = cards[cardIdx];
             cardIdx++;
             updateAllClients("", true);
             return true;
@@ -129,8 +130,8 @@ namespace Crazy8Library
             userCallBacks = new Dictionary<string, Player>();
             turnManager = new List<string>();
             currentTurn = 0;
-            currentSuit = 0;
-            currentRank = 0;
+            TwoChain = 0;
+            TopCard = null;
             Repopulate();
         }
 
@@ -161,10 +162,16 @@ namespace Crazy8Library
         public bool EndTurn(string name)
         {
             if (turnManager[currentTurn] != name) { return false; }
-            currentTurn++;
-            if (currentTurn >= turnManager.Count) { currentTurn = 0; }
+            currentTurn = getNextTurn();
             updateAllClients("",false);
             return true;
+        }
+
+        private int getNextTurn()
+        {
+            int testNum = currentTurn + 1;
+            if (testNum >= turnManager.Count) { testNum = 0; }
+            return testNum;
         }
 
         void Repopulate()
@@ -191,19 +198,26 @@ namespace Crazy8Library
             cardIdx = 0;
         }
 
-        public bool PlaceDown(string name, int suit, int rank)
+        public bool PlaceDown(string name, Card placed)
         {
-            if ((suit != currentSuit && rank != currentRank) || cardIdx > cards.Count - 1) { return false; }
-            currentSuit = suit;
-            currentRank = rank;
+            if (placed.Suit != TopCard.Suit && placed.Rank != TopCard.Rank || turnManager[currentTurn] != name) { return false; }
+            //if ((suit != currentSuit && rank != currentRank) || cardIdx > cards.Count - 1) { return false; }
+            TopCard = placed;
             userCallBacks[name].CardsInHand--;
             if (CheckWinner(name))
             {
+                UnlockServer();
+                TwoChain = 0;
                 updateAllClients(name, false);
             }
             else
             {
-                updateAllClients("", false);
+                if (placed.Rank == Card.RankID.Jack) {
+                    currentTurn = getNextTurn();
+                }
+                if(placed.Rank == Card.RankID.Two){TwoChain+=2;}
+                else{TwoChain = 0;}
+                EndTurn(name);
             }
             return true;
         }
@@ -218,7 +232,7 @@ namespace Crazy8Library
 
         private void updateAllClients(string winner, bool start)
         {
-            CallbackInfo info = new CallbackInfo(userCallBacks.Count, userCallBacks.Values.ToList(), turnManager[currentTurn], currentAdmin, winner, currentSuit, currentRank, start);
+            CallbackInfo info = new CallbackInfo(userCallBacks.Count, userCallBacks.Values.ToList(), turnManager[currentTurn], currentAdmin, winner, TopCard,TwoChain, start);
             foreach (Player player in userCallBacks.Values)
             {
                 player.PlayerCallBack.UpdateGui(info);

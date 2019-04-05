@@ -11,27 +11,27 @@ namespace Crazy8Library
     public class CallbackInfo
     {
         //Game Info
-        [DataMember] public int TopSuit { get; private set; }
-        [DataMember] public int TopRank { get; private set; }
+        [DataMember] public Card CurrentCard { get; private set; }
         [DataMember] public bool StartGame { get; private set; }
         [DataMember] public string Administrator { get; private set; }
         [DataMember] public string Winner { get; set; }
         [DataMember] public string CurrentTurn { get; set; }
+        [DataMember] public int PickUpCards { get; private set; }
 
         //Lobby Info
         [DataMember] public int numPlayers { get; private set; }
         [DataMember] public List<Player> AllPlayers { get; private set; }
 
-        public CallbackInfo(int num, List<Player> players,string turn,string admin, string win,int topS, int topR, bool start)
+        public CallbackInfo(int num, List<Player> players,string turn,string admin, string win,Card top,int pick, bool start)
         {
             Administrator = admin;
             Winner = win;
-            TopSuit = topS;
-            TopRank = topR;
+            CurrentCard = top;
             StartGame = start;
             numPlayers = num;
             AllPlayers = players;
             CurrentTurn = turn;
+            PickUpCards = pick;
         }
     }
 }
