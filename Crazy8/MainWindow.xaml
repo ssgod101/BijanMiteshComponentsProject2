@@ -51,7 +51,7 @@
                 </TransformGroup>
             </StackPanel.RenderTransform>
         </StackPanel>
-        <StackPanel x:Name="StackPanelBottom" Margin="190,752,190,65" Orientation="Horizontal" Width="1112" Height="152" />
+        <StackPanel x:Name="StackPanelBottom" Margin="190,748,190,69" Orientation="Horizontal" Width="1112" Height="152" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Visible" />
         <StackPanel x:Name="StackPanelSuit" Margin="496,605,496,212" Orientation="Horizontal" Height="152" />
         <Button x:Name="btnDeck" Margin="570,357,750,369" BorderThickness="0" Background="White" Click="BtnDeck_Click" >
             <Image Source="./Cards/BackCard.png" ></Image>
