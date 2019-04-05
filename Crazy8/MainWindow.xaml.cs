@@ -54,7 +54,7 @@ namespace Crazy8
             Environment.Exit(0);
         }
         private void NewGame() {
-            deck.NewGame(PlayerName);
+            
             PlayerHand = new List<Card>();
             for (int i = 0; i < 5; i++)
             {
@@ -64,31 +64,25 @@ namespace Crazy8
             PlayerBotton.Content = PlayerName;
             
         }
-        private void UpdateOtherPlayersCard(List<Player> AllPlayers) {
-            AllPlayers.Remove(AllPlayers.Find(a => a.Name==PlayerName));
-            if (AllPlayers.Count == 1) { PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand; }
-            else if (AllPlayers.Count == 2)
-            {
-                PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand;
-                PlayerRight.Content = AllPlayers.ElementAt(1).Name + ": " + AllPlayers.ElementAt(1).CardsInHand;
-            }
-            else
-            {
-                PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand;
-                PlayerRight.Content = AllPlayers.ElementAt(1).Name + ": " + AllPlayers.ElementAt(1).CardsInHand;
-                PlayerLeft.Content = AllPlayers.ElementAt(2).Name + ": " + AllPlayers.ElementAt(2).CardsInHand;
-            }
-            
-
-              
-        }
+      
         private delegate void ClientUpdateDelegate(CallbackInfo info);
         public void UpdateGui(CallbackInfo info)
         {
             if (System.Threading.Thread.CurrentThread == this.Dispatcher.Thread)
             {
                 if (info.StartGame) { lobby.Hide();}
-                if (PlayerName != "") { UpdateOtherPlayersCard(info.AllPlayers); }
+                if (PlayerName != "") { UpdateOtherPlayersCard(info.AllPlayers);
+                    
+                    Image image = new Image();
+                    string temp = "./Cards/" + info.CurrentCard.ToString() + ".png";
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.UriSource = new Uri(temp, UriKind.RelativeOrAbsolute);
+                    bitmapImage.EndInit();
+                    image.Source = bitmapImage;
+                    btnCurrentCard.Content = image;
+                   
+                }
                 lobby.UpdateLobby(info.numPlayers,info.AllPlayers,info.Administrator);
             }
             else
@@ -117,11 +111,7 @@ namespace Crazy8
             
             foreach (Card card in CardsOnHand)
             {
-                Button button = new Button
-                {
-                   Width=100
-                
-                };
+                Button button = new Button();
                 Image image = new Image();
                 string temp = "./Cards/" + card.ToString() + ".png";
                BitmapImage bitmapImage = new BitmapImage();
@@ -129,11 +119,94 @@ namespace Crazy8
                 bitmapImage.UriSource = new Uri(temp, UriKind.RelativeOrAbsolute);
                 bitmapImage.EndInit();
                 image.Source = bitmapImage;
-                
-                
                 button.Content = image;
-                StackPanel.Children.Add(button);
+                StackPanelBottom.Children.Add(button);
             } 
+        }
+        private void UpdateOtherPlayersCard(List<Player> AllPlayers)
+        {
+            AllPlayers.Remove(AllPlayers.Find(a => a.Name == PlayerName));
+           
+            if (AllPlayers.Count == 1)
+            {
+                PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand;
+                for (int i=0; i<AllPlayers.ElementAt(0).CardsInHand;i++)
+                {
+                    Button button = new Button();
+                    Image image = new Image();
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
+                    bitmapImage.EndInit();
+                    image.Source = bitmapImage;
+                    button.Content = image;
+                    StackPanelBottom.Children.Add(button);
+                }
+            }
+            else if (AllPlayers.Count == 2)
+            {
+                PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand;
+                PlayerRight.Content = AllPlayers.ElementAt(1).Name + ": " + AllPlayers.ElementAt(1).CardsInHand;
+                for (int i = 0; i < AllPlayers.ElementAt(0).CardsInHand; i++)
+                {
+                    Image image = new Image();
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
+                    bitmapImage.EndInit();
+                    image.Source = bitmapImage;
+                    StackPanelBottom.Children.Add(image);
+                }
+                for (int i = 0; i < AllPlayers.ElementAt(1).CardsInHand; i++)
+                {
+                    Image image = new Image();
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
+                    bitmapImage.EndInit();
+                    image.Source = bitmapImage;
+                    StackPanelRight.Children.Add(image);
+                }
+            }
+            else
+            {
+                PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand;
+                PlayerRight.Content = AllPlayers.ElementAt(1).Name + ": " + AllPlayers.ElementAt(1).CardsInHand;
+                PlayerLeft.Content = AllPlayers.ElementAt(2).Name + ": " + AllPlayers.ElementAt(2).CardsInHand;
+                for (int i = 0; i < AllPlayers.ElementAt(0).CardsInHand; i++)
+                {
+                    Image image = new Image();
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
+                    bitmapImage.EndInit();
+                    image.Source = bitmapImage;
+                    StackPanelTop.Children.Add(image);
+                }
+                for (int i = 0; i < AllPlayers.ElementAt(1).CardsInHand; i++)
+                {
+                    Image image = new Image();
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
+                    bitmapImage.EndInit();
+                    image.Source = bitmapImage;
+                    StackPanelRight.Children.Add(image);
+                }
+                for (int i = 0; i < AllPlayers.ElementAt(2).CardsInHand; i++)
+                {
+                    Image image = new Image();
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
+                    bitmapImage.EndInit();
+                    image.Source = bitmapImage;
+                    StackPanelLeft.Children.Add(image);
+                }
+            }
+
+
+
         }
     }
 }

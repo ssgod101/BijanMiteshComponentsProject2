@@ -63,7 +63,7 @@ namespace Crazy8
                 if (int.Parse(Players.Content.ToString()) < 2) { MessageBox.Show("Wait for another player"); }
                 else
                 {
-                    this.Hide();
+                    deck.NewGame(name);
                 }
             }
         }

@@ -5,17 +5,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Crazy8"
         mc:Ignorable="d" Closing="Window_Closing"
-        Title="Crazy 8's" Height="450" Width="800">
+        Title="Crazy 8's" Height="1000" Width="1500">
     <Grid>
-        <Label x:Name="PlayerLeft" Content="" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="70,161,547,189" Width="175" Height="69" ></Label>
-        <Label x:Name="PlayerRight" Content="" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="557,161,64,176" Width="171" Height="82"></Label>
-        <Label x:Name="PlayerTop" Content="" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="305,10,280,337" Width="207" Height="72"></Label>
-        <Label x:Name="PlayerBotton" Content="" FontSize="22" FontWeight="DemiBold" Margin="305,368,280,0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="207" Height="51" ></Label>
-        <StackPanel x:Name="StackPanel" Margin="120,248,148,56" Orientation="Horizontal" />
-        <Button x:Name="btnDeck" Margin="251,82,460,222" BorderThickness="0" Background="White" Click="BtnDeck_Click" >
+        <Label x:Name="PlayerLeft" Content="D" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,450,1257,469" Width="230" Height="50" RenderTransformOrigin="0.5,0.5" >
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90.0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label x:Name="PlayerRight" Content="C" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="1262,449,0,470" Width="230" Height="50" RenderTransformOrigin="0.5,0.5">
+            <Label.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90.0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Label.RenderTransform>
+        </Label>
+        <Label x:Name="PlayerTop" Content="B" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="631,10,631,900" Width="230" Height="50"></Label>
+        <Label x:Name="PlayerBotton" Content="A" FontSize="22" FontWeight="DemiBold" Margin="630,900,630,10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="230" Height="50" ></Label>
+        <StackPanel x:Name="StackPanelTop" Margin="300,66,300,751" Orientation="Horizontal" Height="152" Width="892" />
+        <StackPanel x:Name="StackPanelLeft" Margin="-174,288,1016,529" Orientation="Horizontal" Height="0" RenderTransformOrigin="0.5,0.5" Width="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90.0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </StackPanel.RenderTransform>
+        </StackPanel>
+        <StackPanel x:Name="StackPanelRight" Margin="1016,288,-174,529" Orientation="Horizontal"  Width="0" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Height="0" >
+            <StackPanel.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90.0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </StackPanel.RenderTransform>
+        </StackPanel>
+        <StackPanel x:Name="StackPanelBottom" Margin="190,752,190,65" Orientation="Horizontal" Width="1112" Height="152" />
+        <Button x:Name="btnDeck" Margin="570,357,750,369" BorderThickness="0" Background="White" Click="BtnDeck_Click" >
             <Image Source="./Cards/BackCard.png" ></Image>
         </Button>
-        <Button x:Name="btnCurrentCard" Margin="350,82,362,222" Click="BtnCurrentCard_Click"></Button>
-        <Button x:Name="btnEndTurn" Content="End Turn !" Margin="649,275,26,83" Click="BtnEndTurn_Click"></Button>
+        <Button x:Name="btnCurrentCard" Margin="750,357,570,369" Click="BtnCurrentCard_Click"></Button>
+        <Button x:Name="btnEndTurn" Content="End Turn !" Margin="1346,771,26,126" Click="BtnEndTurn_Click"></Button>
     </Grid>
 </Window>
