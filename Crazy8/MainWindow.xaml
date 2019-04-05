@@ -30,8 +30,8 @@
         </Label>
         <Label x:Name="PlayerTop" Content="B" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="631,10,631,900" Width="230" Height="50"></Label>
         <Label x:Name="PlayerBotton" Content="A" FontSize="22" FontWeight="DemiBold" Margin="630,900,630,10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="230" Height="50" ></Label>
-        <StackPanel x:Name="StackPanelTop" Margin="300,66,300,751" Orientation="Horizontal" Height="0" Width="0" />
-        <StackPanel x:Name="StackPanelLeft" Margin="-174,288,1016,529" Orientation="Horizontal" Height="0" RenderTransformOrigin="0.5,0.5" Width="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel x:Name="StackPanelTop" Margin="300,66,300,751" Orientation="Horizontal" Height="100" Width="500" />
+        <StackPanel x:Name="StackPanelLeft" Margin="-2,308,994,561" Orientation="Horizontal" Height="100" Width="500" RenderTransformOrigin="0.5,0.5"  HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -41,7 +41,7 @@
                 </TransformGroup>
             </StackPanel.RenderTransform>
         </StackPanel>
-        <StackPanel x:Name="StackPanelRight" Margin="1016,288,-174,529" Orientation="Horizontal"  Width="0" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Height="0" >
+        <StackPanel x:Name="StackPanelRight" Margin="991,303,1,566" Orientation="Horizontal" Height="100" Width="500"  HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" >
             <StackPanel.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -52,6 +52,7 @@
             </StackPanel.RenderTransform>
         </StackPanel>
         <StackPanel x:Name="StackPanelBottom" Margin="190,752,190,65" Orientation="Horizontal" Width="1112" Height="152" />
+        <StackPanel x:Name="StackPanelSuit" Margin="496,605,496,212" Orientation="Horizontal" Height="152" />
         <Button x:Name="btnDeck" Margin="570,357,750,369" BorderThickness="0" Background="White" Click="BtnDeck_Click" >
             <Image Source="./Cards/BackCard.png" ></Image>
         </Button>
