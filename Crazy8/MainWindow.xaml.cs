@@ -93,6 +93,8 @@ namespace Crazy8
                 {
                     MessageBox.Show(info.Winner+" wins!");
                     this.Hide();
+                    deck.Leave(PlayerName);
+                    lobby.Join.IsEnabled = true;
                     lobby.ShowDialog();
                 }
                 CurrentTurn = info.CurrentTurn;

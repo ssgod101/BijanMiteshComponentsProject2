@@ -17,6 +17,7 @@ namespace Crazy8Library
         [DataMember] public string Winner { get; set; }
         [DataMember] public string CurrentTurn { get; set; }
         [DataMember] public int PickUpCards { get; private set; }
+        [DataMember] public int NotEnoughPlayers { get; set; }
 
         //Lobby Info
         [DataMember] public int numPlayers { get; private set; }

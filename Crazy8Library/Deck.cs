@@ -175,7 +175,7 @@ namespace Crazy8Library
 
         public bool EndTurn(string name)
         {
-            if (turnManager[turnIndex] != name) { return false; }
+            if (turnManager[turnIndex] != name || canJoin) { return false; }
             NextTurn();
             updateAllClients("",false,false);
             return true;
@@ -230,6 +230,8 @@ namespace Crazy8Library
             {
                 UnlockServer();
                 TwoChain = 0;
+                turnIndex = 0;
+                
                 updateAllClients(name, false,false);
             }
             else
