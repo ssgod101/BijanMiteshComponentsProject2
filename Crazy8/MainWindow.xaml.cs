@@ -126,18 +126,21 @@ namespace Crazy8
                 {
                     PickSuit();
                 }
-
-                if (!deck.PlaceDown(PlayerName, new Card(suit, rank)))
-                {
-                    MessageBox.Show("suit or rank must be same as top card.");
-                }
                 else
                 {
-                   
-                    PlayerHand.Remove(PlayerHand.Find(c=> c.Rank==rank && c.Suit==suit));
-                    MakeBtnCardOnScreen();
-                    pickedOne = false;
 
+                    if (!deck.PlaceDown(PlayerName, new Card(suit, rank)))
+                    {
+                        MessageBox.Show("suit or rank must be same as top card.");
+                    }
+                    else
+                    {
+
+                        PlayerHand.Remove(PlayerHand.Find(c => c.Rank == rank && c.Suit == suit));
+                        MakeBtnCardOnScreen();
+                        pickedOne = false;
+
+                    }
                 }
             }
         }
@@ -272,7 +275,7 @@ namespace Crazy8
 
         }
         private void PickSuitClick(object sender, RoutedEventArgs e) {
-
+            StackPanelSuit.Children.Clear();
             Button button = sender as Button;
             string temp = button.Name;
             string[] splitResult = temp.Split('_');
@@ -307,6 +310,7 @@ namespace Crazy8
                 bitmapImage.UriSource = new Uri("./Cards/Eight_Diamonds.png", UriKind.RelativeOrAbsolute);
                 bitmapImage.EndInit();
                 image.Source = bitmapImage;
+                button.Click += PickSuitClick;
                 button.Content = image;
                 button.Name = "Eight_Diamonds";
                 StackPanelSuit.Children.Add(button);
@@ -320,6 +324,7 @@ namespace Crazy8
                 bitmapImage.EndInit();
                 image.Source = bitmapImage;
                 button.Content = image;
+                button.Click += PickSuitClick;
                 button.Name = "Eight_Clubs";
                 StackPanelSuit.Children.Add(button);
             }
@@ -332,6 +337,7 @@ namespace Crazy8
                 bitmapImage.EndInit();
                 image.Source = bitmapImage;
                 button.Content = image;
+                button.Click += PickSuitClick;
                 button.Name = "Eight_Spades";
                 StackPanelSuit.Children.Add(button);
             }
