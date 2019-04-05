@@ -91,6 +91,7 @@ namespace Crazy8
                 if(info.Winner.Length > 0)
                 {
                     //Display Winner!
+                    
                 }
                 CurrentTurn = info.CurrentTurn;
                 if (CurrentTurn == PlayerName) { pickedOne = false; }
@@ -127,7 +128,8 @@ namespace Crazy8
                 }
                 else
                 {
-                    PlayerHand.Remove(new Card(suit, rank));
+                    Card remove = PlayerHand.Find(c => c.Suit == suit && c.Rank == rank);
+                    PlayerHand.Remove(remove);
                     MakeBtnCardOnScreen();
                 }
             }

@@ -222,7 +222,7 @@ namespace Crazy8Library
 
         public bool PlaceDown(string name, Card placed)
         {
-            if (placed.Suit != TopCard.Suit && placed.Rank != TopCard.Rank || turnManager[turnIndex] != name) { return false; }
+            if ((placed.Suit != TopCard.Suit && placed.Rank != TopCard.Rank && placed.Rank != Card.RankID.Eight) || turnManager[turnIndex] != name) { return false; }
             //if ((suit != currentSuit && rank != currentRank) || cardIdx > cards.Count - 1) { return false; }
             TopCard = placed;
             userCallBacks[name].CardsInHand--;
@@ -239,8 +239,8 @@ namespace Crazy8Library
                 }
                 if(placed.Rank == Card.RankID.Two){TwoChain+=2;}
                 else{TwoChain = 0;}
-                EndTurn(name);
             }
+            EndTurn(name);
             return true;
         }
 
