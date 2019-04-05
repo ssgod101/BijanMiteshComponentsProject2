@@ -27,7 +27,7 @@ namespace Crazy8Library
     {
         [OperationContract] bool Join(string name);
         [OperationContract(IsOneWay = true)] void Leave(string name);
-        [OperationContract] Card[] Draw(string name, int amount);
+        //[OperationContract] Card[] Draw(string name, int amount);
         [OperationContract] Card DrawSingle(string name);
         [OperationContract] bool PlaceDown(string name,Card placed);
         [OperationContract] bool NewGame(string name);
@@ -46,12 +46,13 @@ namespace Crazy8Library
         private bool canJoin = true;
         private Card TopCard;
         private string currentAdmin;
-        private int currentTurn;
         private int TwoChain;
 
         // Member variables related to the callbacks
         private Dictionary<string, Player> userCallBacks;
         private List<string> turnManager;
+        private int turnIndex;
+        private string currentTurn;
 
         //Lobby Functionality
 
@@ -70,7 +71,7 @@ namespace Crazy8Library
                 turnManager.Add(name);
                 userCallBacks[name].IsHost = userCallBacks.Count == 1;
                 if (userCallBacks[name].IsHost) { currentAdmin = name; }
-                updateAllClients("", false);
+                updateAllClients("", false,false);
                 return true;
             }
         }
@@ -78,14 +79,30 @@ namespace Crazy8Library
         {
             if (userCallBacks.ContainsKey(name))
             {
+                string nextPlayer = name;
+                bool enoughPlayers = false;
                 Console.WriteLine(name + " has left!");
-                if (turnManager[currentTurn] == name) { }
+                if (turnManager[turnIndex] == name && !canJoin)
+                {
+                    NextTurn();
+                    nextPlayer = turnManager[turnIndex];
+
+                }
                 userCallBacks.Remove(name);
                 turnManager.Remove(name);
+                if(turnManager.Count >= 2 && !canJoin)
+                {
+                    turnIndex = turnManager.FindIndex(n => n == nextPlayer);
+                }
+                else if(!canJoin)
+                {
+                    enoughPlayers = true;
+                }
+
                 //if()
                 //0 1 2 3
                 if(userCallBacks.Count > 0) { currentAdmin = userCallBacks.First().Value.Name; }
-                updateAllClients("", false);
+                updateAllClients("", false,enoughPlayers);
             }
         }
 
@@ -108,10 +125,10 @@ namespace Crazy8Library
             if (currentAdmin != name) { return false; }
             LockServer(name);
             Shuffle();
-            currentTurn = 0;
+            turnIndex = 0;
             TopCard = cards[cardIdx];
             cardIdx++;
-            updateAllClients("", true);
+            updateAllClients("", true,false);
             return true;
         }
 
@@ -126,7 +143,7 @@ namespace Crazy8Library
             cards = new List<Card>();
             userCallBacks = new Dictionary<string, Player>();
             turnManager = new List<string>();
-            currentTurn = 0;
+            turnIndex = 0;
             TwoChain = 0;
             TopCard = null;
             Repopulate();
@@ -152,23 +169,31 @@ namespace Crazy8Library
             Card card = cards[cardIdx++];
             userCallBacks[name].CardsInHand++;
             Console.WriteLine("[Game #" + objNum + "] Dealing " + card);
-            updateAllClients("",false);
+            updateAllClients("",false,false);
             return card;
         }
 
         public bool EndTurn(string name)
         {
-            if (turnManager[currentTurn] != name) { return false; }
-            currentTurn = getNextTurn();
-            updateAllClients("",false);
+            if (turnManager[turnIndex] != name) { return false; }
+            NextTurn();
+            updateAllClients("",false,false);
             return true;
         }
 
-        private int getNextTurn()
+        private int checkNextTurn()
         {
-            int testNum = currentTurn + 1;
+            int testNum = turnIndex + 1;
             if (testNum >= turnManager.Count) { testNum = 0; }
             return testNum;
+        }
+
+        private void NextTurn()
+        {
+            int testNum = turnIndex + 1;
+            if (testNum >= turnManager.Count) { testNum = 0; }
+            turnIndex = testNum;
+            currentTurn = turnManager[turnIndex];
         }
 
         void Repopulate()
@@ -197,7 +222,7 @@ namespace Crazy8Library
 
         public bool PlaceDown(string name, Card placed)
         {
-            if (placed.Suit != TopCard.Suit && placed.Rank != TopCard.Rank || turnManager[currentTurn] != name) { return false; }
+            if (placed.Suit != TopCard.Suit && placed.Rank != TopCard.Rank || turnManager[turnIndex] != name) { return false; }
             //if ((suit != currentSuit && rank != currentRank) || cardIdx > cards.Count - 1) { return false; }
             TopCard = placed;
             userCallBacks[name].CardsInHand--;
@@ -205,12 +230,12 @@ namespace Crazy8Library
             {
                 UnlockServer();
                 TwoChain = 0;
-                updateAllClients(name, false);
+                updateAllClients(name, false,false);
             }
             else
             {
                 if (placed.Rank == Card.RankID.Jack) {
-                    currentTurn = getNextTurn();
+                    NextTurn();
                 }
                 if(placed.Rank == Card.RankID.Two){TwoChain+=2;}
                 else{TwoChain = 0;}
@@ -227,9 +252,9 @@ namespace Crazy8Library
 
         //CallBack functions
 
-        private void updateAllClients(string winner, bool start)
+        private void updateAllClients(string winner, bool start,bool notEnough)
         {
-            CallbackInfo info = new CallbackInfo(userCallBacks.Count, userCallBacks.Values.ToList(), turnManager[currentTurn], currentAdmin, winner, TopCard,TwoChain, start);
+            CallbackInfo info = new CallbackInfo(userCallBacks.Count, userCallBacks.Values.ToList(), turnManager[turnIndex], currentAdmin, winner, TopCard,TwoChain, start);
             foreach (Player player in userCallBacks.Values)
             {
                 player.PlayerCallBack.UpdateGui(info);
