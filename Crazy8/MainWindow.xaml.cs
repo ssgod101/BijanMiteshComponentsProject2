@@ -169,6 +169,7 @@ namespace Crazy8
                 button.Name = card.ToString();
                 button.Click += Card_Click;
                 StackPanelBottom.Children.Add(button);
+            
             } 
         }
         private void UpdateOtherPlayersCard(List<Player> AllPlayers)
