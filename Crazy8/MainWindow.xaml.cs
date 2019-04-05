@@ -54,21 +54,20 @@ namespace Crazy8
             Environment.Exit(0);
         }
         private void NewGame() {
-
+            deck.NewGame(PlayerName);
             PlayerHand = new List<Card>();
             for (int i = 0; i < 5; i++)
             {
                 PlayerHand.Add(deck.DrawSingle(PlayerName));
-                lbPlayerHand.Items.Add(PlayerHand[i]);
-
             }
+            MakeBtnCardOnScreen(PlayerHand);
             PlayerBotton.Content = PlayerName;
             
         }
         private void UpdateOtherPlayersCard(List<Player> AllPlayers) {
             AllPlayers.Remove(AllPlayers.Find(a => a.Name==PlayerName));
-            if (AllPlayers.Count < 2) { PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand; }
-            else if (AllPlayers.Count < 3)
+            if (AllPlayers.Count == 1) { PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand; }
+            else if (AllPlayers.Count == 2)
             {
                 PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand;
                 PlayerRight.Content = AllPlayers.ElementAt(1).Name + ": " + AllPlayers.ElementAt(1).CardsInHand;
@@ -89,7 +88,7 @@ namespace Crazy8
             if (System.Threading.Thread.CurrentThread == this.Dispatcher.Thread)
             {
                 if (info.StartGame) { lobby.Hide();}
-                UpdateOtherPlayersCard(info.AllPlayers);
+                if (PlayerName != "") { UpdateOtherPlayersCard(info.AllPlayers); }
                 lobby.UpdateLobby(info.numPlayers,info.AllPlayers,info.Administrator);
             }
             else
@@ -97,6 +96,43 @@ namespace Crazy8
                 // Only the main (dispatcher) thread can change the GUI
                 this.Dispatcher.BeginInvoke(new ClientUpdateDelegate(UpdateGui), info);
             }
+        }
+
+        private void BtnCurrentCard_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnEndTurn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnDeck_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MakeBtnCardOnScreen(List<Card> CardsOnHand) {
+            
+            foreach (Card card in CardsOnHand)
+            {
+                Button button = new Button
+                {
+                    Width = 100
+
+                };
+                Image image = new Image
+                {
+                    Source = new BitmapImage
+                    {
+                        UriSource = new Uri("./Cards/backCard.png", UriKind.Relative)
+                    }
+
+                };
+                button.Content = image;
+                StackPanel.Children.Add(image);
+            } 
         }
     }
 }

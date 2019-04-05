@@ -100,13 +100,70 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Crazy8Library\Crazy8Library.csproj">
       <Project>{e4dd5340-6986-447a-bd19-cecf9c6f8494}</Project>
       <Name>Crazy8Library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Cards\10_of_clubs.png" />
+    <Resource Include="Cards\10_of_diamonds.png" />
+    <Resource Include="Cards\10_of_hearts.png" />
+    <Resource Include="Cards\10_of_spades.png" />
+    <Resource Include="Cards\2_of_clubs.png" />
+    <Resource Include="Cards\2_of_diamonds.png" />
+    <Resource Include="Cards\2_of_hearts.png" />
+    <Resource Include="Cards\2_of_spades.png" />
+    <Resource Include="Cards\3_of_clubs.png" />
+    <Resource Include="Cards\3_of_diamonds.png" />
+    <Resource Include="Cards\3_of_hearts.png" />
+    <Resource Include="Cards\3_of_spades.png" />
+    <Resource Include="Cards\4_of_clubs.png" />
+    <Resource Include="Cards\4_of_diamonds.png" />
+    <Resource Include="Cards\4_of_hearts.png" />
+    <Resource Include="Cards\4_of_spades.png" />
+    <Resource Include="Cards\5_of_clubs.png" />
+    <Resource Include="Cards\5_of_diamonds.png" />
+    <Resource Include="Cards\5_of_hearts.png" />
+    <Resource Include="Cards\5_of_spades.png" />
+    <Resource Include="Cards\6_of_clubs.png" />
+    <Resource Include="Cards\6_of_diamonds.png" />
+    <Resource Include="Cards\6_of_hearts.png" />
+    <Resource Include="Cards\6_of_spades.png" />
+    <Resource Include="Cards\7_of_clubs.png" />
+    <Resource Include="Cards\7_of_diamonds.png" />
+    <Resource Include="Cards\7_of_hearts.png" />
+    <Resource Include="Cards\7_of_spades.png" />
+    <Resource Include="Cards\8_of_clubs.png" />
+    <Resource Include="Cards\8_of_diamonds.png" />
+    <Resource Include="Cards\8_of_hearts.png" />
+    <Resource Include="Cards\8_of_spades.png" />
+    <Resource Include="Cards\9_of_clubs.png" />
+    <Resource Include="Cards\9_of_diamonds.png" />
+    <Resource Include="Cards\9_of_hearts.png" />
+    <Resource Include="Cards\9_of_spades.png" />
+    <Resource Include="Cards\ace_of_clubs.png" />
+    <Resource Include="Cards\ace_of_diamonds.png" />
+    <Resource Include="Cards\ace_of_hearts.png" />
+    <Resource Include="Cards\ace_of_spades2.png" />
+    <Resource Include="Cards\backCard.png" />
+    <Resource Include="Cards\jack_of_clubs2.png" />
+    <Resource Include="Cards\jack_of_diamonds2.png" />
+    <Resource Include="Cards\jack_of_hearts2.png" />
+    <Resource Include="Cards\jack_of_spades2.png" />
+    <Resource Include="Cards\king_of_clubs2.png" />
+    <Resource Include="Cards\king_of_diamonds2.png" />
+    <Resource Include="Cards\king_of_hearts2.png" />
+    <Resource Include="Cards\king_of_spades2.png" />
+    <Resource Include="Cards\queen_of_clubs2.png" />
+    <Resource Include="Cards\queen_of_diamonds2.png" />
+    <Resource Include="Cards\queen_of_hearts2.png" />
+    <Resource Include="Cards\queen_of_spades2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

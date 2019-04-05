@@ -5,13 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Crazy8"
         mc:Ignorable="d" Closing="Window_Closing"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Crazy 8's" Height="450" Width="800">
     <Grid>
         <Label x:Name="PlayerLeft" Content="" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="70,161,547,189" Width="175" Height="69" ></Label>
         <Label x:Name="PlayerRight" Content="" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="557,161,64,176" Width="171" Height="82"></Label>
         <Label x:Name="PlayerTop" Content="" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="305,10,280,337" Width="207" Height="72"></Label>
         <Label x:Name="PlayerBotton" Content="" FontSize="22" FontWeight="DemiBold" Margin="305,368,280,0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="207" Height="51" ></Label>
-        <ListBox x:Name="lbPlayerHand" HorizontalAlignment="Left" Height="101" Margin="149,235,0,0" VerticalAlignment="Top" Width="474"/>
-
+        <StackPanel x:Name="StackPanel" Margin="120,248,148,56" Orientation="Horizontal" />
+        <Button x:Name="btnDeck" Margin="251,82,460,222" BorderThickness="0" Background="White" Click="BtnDeck_Click" >
+            <Image Source="./Cards/BackCard.png" ></Image>
+        </Button>
+        <Button x:Name="btnCurrentCard" Margin="350,82,362,222" Click="BtnCurrentCard_Click"></Button>
+        <Button x:Name="btnEndTurn" Content="End Turn !" Margin="649,275,26,83" Click="BtnEndTurn_Click"></Button>
     </Grid>
 </Window>
