@@ -239,8 +239,9 @@ namespace Crazy8Library
                 }
                 if(placed.Rank == Card.RankID.Two){TwoChain+=2;}
                 else{TwoChain = 0;}
-                EndTurn(name);
             }
+            string cheat = turnManager[turnIndex];
+            EndTurn(cheat);
             return true;
         }
 
@@ -254,7 +255,10 @@ namespace Crazy8Library
 
         private void updateAllClients(string winner, bool start,bool notEnough)
         {
-            CallbackInfo info = new CallbackInfo(userCallBacks.Count, userCallBacks.Values.ToList(), turnManager[turnIndex], currentAdmin, winner, TopCard,TwoChain, start);
+            int t = turnManager.Count;
+            string h = "";
+            h = turnManager.Count > 0 ? turnManager[turnIndex] : "";
+            CallbackInfo info = new CallbackInfo(userCallBacks.Count, userCallBacks.Values.ToList(), h, currentAdmin, winner, TopCard,TwoChain, start);
             foreach (Player player in userCallBacks.Values)
             {
                 player.PlayerCallBack.UpdateGui(info);
