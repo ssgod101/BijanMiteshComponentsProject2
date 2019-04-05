@@ -239,7 +239,6 @@ namespace Crazy8Library
                 }
                 if(placed.Rank == Card.RankID.Two){TwoChain+=2;}
                 else{TwoChain = 0;}
-             
             }
 
 
