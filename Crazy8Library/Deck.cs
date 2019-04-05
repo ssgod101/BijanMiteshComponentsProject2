@@ -241,6 +241,8 @@ namespace Crazy8Library
                 else{TwoChain = 0;}
              
             }
+
+
             EndTurn(name);
             return true;
         }
