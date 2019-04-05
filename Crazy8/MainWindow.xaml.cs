@@ -28,6 +28,8 @@ namespace Crazy8
         private Lobby lobby = null;
         private List<Card> PlayerHand;
         private string PlayerName="";
+        private string Administrator = "";
+        private string CurrentTurn = "";
         public MainWindow()
         {
             InitializeComponent();
@@ -54,7 +56,7 @@ namespace Crazy8
             Environment.Exit(0);
         }
         private void NewGame() {
-            
+            deck.NewGame(PlayerName);
             PlayerHand = new List<Card>();
             for (int i = 0; i < 5; i++)
             {
@@ -84,6 +86,20 @@ namespace Crazy8
                    
                 }
                 lobby.UpdateLobby(info.numPlayers,info.AllPlayers,info.Administrator);
+                Administrator = info.Administrator;
+                if(info.Winner.Length > 0)
+                {
+                    //Display Winner!
+                }
+                CurrentTurn = info.CurrentTurn;
+                if(CurrentTurn == PlayerName && info.PickUpCards > 0)
+                {
+                    for(int i = 0; i < info.PickUpCards; i++)
+                    {
+                        PlayerHand.Add(deck.DrawSingle(PlayerName));
+                    }
+                }
+                
             }
             else
             {
