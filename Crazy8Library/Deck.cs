@@ -44,9 +44,6 @@ namespace Crazy8Library
         private static uint objCount = 0;
         private uint objNum;
         private bool canJoin = true;
-
-        private int currentSuit;
-        private int currentRank;
         private Card TopCard;
         private string currentAdmin;
         private int currentTurn;
@@ -100,7 +97,7 @@ namespace Crazy8Library
             return true;
         }
 
-        public bool UnlockServer()
+        private bool UnlockServer()
         {
             canJoin = true;
             return true;

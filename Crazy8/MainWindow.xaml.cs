@@ -122,14 +122,20 @@ namespace Crazy8
                     Width = 100
 
                 };
-                Image image = new Image
-                {
-                    Source = new BitmapImage
-                    {
-                        UriSource = new Uri("./Cards/backCard.png", UriKind.Relative)
-                    }
+                Image image = new Image();
+                BitmapImage bi3 = new BitmapImage();
+                bi3.BeginInit();
+                bi3.UriSource = new Uri("./Cards/backCard.png",UriKind.Relative);
+                bi3.EndInit();
+                image.Stretch = Stretch.Fill;
+                image.Source = bi3;
+                //{
+                //    Source = new BitmapImage
+                //    {
+                //        UriSource = new Uri("./Cards/backCard.png", UriKind.Relative)
+                //    }
 
-                };
+                //};
                 button.Content = image;
                 StackPanel.Children.Add(image);
             } 
