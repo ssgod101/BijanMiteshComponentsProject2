@@ -31,6 +31,7 @@ namespace Crazy8
         private string Administrator = "";
         private string CurrentTurn = "";
         private bool pickedOne = false;
+        private bool gotNumberTwo = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -96,13 +97,14 @@ namespace Crazy8
                 }
                 CurrentTurn = info.CurrentTurn;
                 
-                if(CurrentTurn == PlayerName && info.PickUpCards > 0)
+                if(CurrentTurn == PlayerName && info.PickUpCards > 0 && !gotNumberTwo)
                 {
                     for(int i = 0; i < info.PickUpCards; i++)
                     {
                         PlayerHand.Add(deck.DrawSingle(PlayerName));
                     }
                     MakeBtnCardOnScreen();
+                    gotNumberTwo = true;
                 }
                 
             }
@@ -139,6 +141,7 @@ namespace Crazy8
                         PlayerHand.Remove(PlayerHand.Find(c => c.Rank == rank && c.Suit == suit));
                         MakeBtnCardOnScreen();
                         pickedOne = false;
+                        gotNumberTwo = false;
 
                     }
                 }
@@ -151,6 +154,7 @@ namespace Crazy8
 
                 deck.EndTurn(PlayerName);
                 pickedOne = false;
+                gotNumberTwo = false;
             }
             
         }
@@ -285,6 +289,7 @@ namespace Crazy8
             PlayerHand.Remove(PlayerHand.Find(c => c.Rank == rank && c.Suit == suit));
             MakeBtnCardOnScreen();
             pickedOne = false;
+            gotNumberTwo = false;
 
         }
         private void PickSuit()
