@@ -7,6 +7,7 @@
         mc:Ignorable="d" Closing="Window_Closing"
         Title="Crazy 8's" Height="1000" Width="1500">
     <Grid>
+        <Label x:Name="lCurrentTurn" Content="" FontSize="22" FontWeight="DemiBold" Margin="570,191,570,647"/>
         <Label x:Name="PlayerLeft" Content="D" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,450,1257,469" Width="230" Height="50" RenderTransformOrigin="0.5,0.5" >
             <Label.RenderTransform>
                 <TransformGroup>
@@ -29,7 +30,7 @@
         </Label>
         <Label x:Name="PlayerTop" Content="B" FontSize="22" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="631,10,631,900" Width="230" Height="50"></Label>
         <Label x:Name="PlayerBotton" Content="A" FontSize="22" FontWeight="DemiBold" Margin="630,900,630,10" HorizontalAlignment="Center" VerticalAlignment="Center" Width="230" Height="50" ></Label>
-        <StackPanel x:Name="StackPanelTop" Margin="300,66,300,751" Orientation="Horizontal" Height="152" Width="892" />
+        <StackPanel x:Name="StackPanelTop" Margin="300,66,300,751" Orientation="Horizontal" Height="0" Width="0" />
         <StackPanel x:Name="StackPanelLeft" Margin="-174,288,1016,529" Orientation="Horizontal" Height="0" RenderTransformOrigin="0.5,0.5" Width="0" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel.RenderTransform>
                 <TransformGroup>
@@ -54,7 +55,7 @@
         <Button x:Name="btnDeck" Margin="570,357,750,369" BorderThickness="0" Background="White" Click="BtnDeck_Click" >
             <Image Source="./Cards/BackCard.png" ></Image>
         </Button>
-        <Button x:Name="btnCurrentCard" Margin="750,357,570,369" Click="BtnCurrentCard_Click"></Button>
+        <Button x:Name="btnCurrentCard" Margin="750,357,570,369" ></Button>
         <Button x:Name="btnEndTurn" Content="End Turn !" Margin="1346,771,26,126" Click="BtnEndTurn_Click"></Button>
     </Grid>
 </Window>
