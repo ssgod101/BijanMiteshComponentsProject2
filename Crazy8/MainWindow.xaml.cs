@@ -54,7 +54,7 @@ namespace Crazy8
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
+            deck.Leave(PlayerName);
             Environment.Exit(0);
         }
         private void NewGame() {
@@ -93,6 +93,8 @@ namespace Crazy8
                 {
                     MessageBox.Show(info.Winner+" wins!");
                     this.Hide();
+                    deck.Leave(PlayerName);
+                    lobby.Join.IsEnabled = true;
                     lobby.ShowDialog();
                 }
                 CurrentTurn = info.CurrentTurn;
@@ -176,7 +178,9 @@ namespace Crazy8
         }
 
         private void MakeBtnCardOnScreen() {
-            StackPanelBottom.Children.Clear();
+            CanvasBottom.Children.Clear();
+            double Left = 1112 / PlayerHand.Count;
+            double MarginLeft = 0.0;
             foreach (Card card in PlayerHand)
             {
                 Button button = new Button();
@@ -190,93 +194,133 @@ namespace Crazy8
                 button.Content = image;
                 button.Name = card.ToString();
                 button.Click += Card_Click;
-                StackPanelBottom.Children.Add(button);
-            
+                button.MaxHeight = 152;
+                CanvasBottom.Children.Add(button);
+                button.Background = Brushes.White;
+                button.BorderThickness = new Thickness(0, 0, 0, 0);
+                button.Margin = new Thickness(MarginLeft,0,0,0);
+                MarginLeft += Left;
             } 
         }
         private void UpdateOtherPlayersCard(List<Player> AllPlayers)
         {
             AllPlayers.Remove(AllPlayers.Find(a => a.Name == PlayerName));
            
-            StackPanelTop.Children.Clear();
-            StackPanelLeft.Children.Clear();
-            StackPanelRight.Children.Clear();
-            if (AllPlayers.Count == 1)
+            CanvasTop.Children.Clear();
+            CanvasLeft.Children.Clear();
+            CanvasRight.Children.Clear();
+            
+            try
             {
-                PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand;
-                for (int i = 0; i < AllPlayers.ElementAt(0).CardsInHand; i++)
+                if (AllPlayers.Count == 1)
                 {
-                    Button button = new Button();
-                    Image image = new Image();
-                    BitmapImage bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
-                    bitmapImage.EndInit();
-                    image.Source = bitmapImage;
-                    button.Content = image;
-                    StackPanelTop.Children.Add(button);
+                    PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand;
+                    double Left = 500 / AllPlayers.ElementAt(0).CardsInHand;
+                    double MarginLeft = 0.0;
+                    for (int i = 0; i < AllPlayers.ElementAt(0).CardsInHand; i++)
+                    {
+                        Image image = new Image();
+                        BitmapImage bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
+                        bitmapImage.EndInit();
+                        image.Source = bitmapImage;
+                        CanvasTop.Children.Add(image);
+                        image.MaxHeight = 100;
+                        image.Margin = new Thickness(MarginLeft, 0, 0, 0);
+                        MarginLeft += Left;
+                    }
+                }
+                else if (AllPlayers.Count == 2)
+                {
+                    PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand;
+                    PlayerRight.Content = AllPlayers.ElementAt(1).Name + ": " + AllPlayers.ElementAt(1).CardsInHand;
+                    double Left = 500 / AllPlayers.ElementAt(0).CardsInHand;
+                    double MarginLeft = 0.0;
+                    for (int i = 0; i < AllPlayers.ElementAt(0).CardsInHand; i++)
+                    {
+                        Image image = new Image();
+                        BitmapImage bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
+                        bitmapImage.EndInit();
+                        image.Source = bitmapImage;
+                        CanvasTop.Children.Add(image);
+                        image.MaxHeight = 100;
+                        image.Margin = new Thickness(MarginLeft, 0, 0, 0);
+                        MarginLeft += Left;
+                    }
+                    double Left1 = 500 / AllPlayers.ElementAt(1).CardsInHand;
+                    double MarginLeft1 = 0.0;
+                    for (int i = 0; i < AllPlayers.ElementAt(1).CardsInHand; i++)
+                    {
+                        Image image = new Image();
+                        BitmapImage bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
+                        bitmapImage.EndInit();
+                        image.Source = bitmapImage;
+                        CanvasRight.Children.Add(image);
+                        image.MaxHeight = 100;
+                        image.Margin = new Thickness(MarginLeft1, 0, 0, 0);
+                        MarginLeft1 += Left1;
+                    }
+                }
+                else if(AllPlayers.Count==3)
+                {
+                    PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand;
+                    PlayerRight.Content = AllPlayers.ElementAt(1).Name + ": " + AllPlayers.ElementAt(1).CardsInHand;
+                    PlayerLeft.Content = AllPlayers.ElementAt(2).Name + ": " + AllPlayers.ElementAt(2).CardsInHand;
+                    double Left = 500 / AllPlayers.ElementAt(0).CardsInHand;
+                    double MarginLeft = 0.0;
+                    for (int i = 0; i < AllPlayers.ElementAt(0).CardsInHand; i++)
+                    {
+                        Image image = new Image();
+                        BitmapImage bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
+                        bitmapImage.EndInit();
+                        image.Source = bitmapImage;
+                        CanvasTop.Children.Add(image);
+                        image.MaxHeight = 100;
+                        image.Margin = new Thickness(MarginLeft, 0, 0, 0);
+                        MarginLeft += Left;
+                    }
+                    double Left1 = 500 / AllPlayers.ElementAt(1).CardsInHand;
+                    double MarginLeft1 = 0.0;
+                    for (int i = 0; i < AllPlayers.ElementAt(1).CardsInHand; i++)
+                    {
+                        Image image = new Image();
+                        BitmapImage bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
+                        bitmapImage.EndInit();
+                        image.Source = bitmapImage;
+                        CanvasRight.Children.Add(image);
+                        image.MaxHeight = 100;
+                        image.Margin = new Thickness(MarginLeft1, 0, 0, 0);
+                        MarginLeft1 += Left1;
+                    }
+                    double Left2 = 500 / AllPlayers.ElementAt(2).CardsInHand;
+                    double MarginLeft2 = 0.0;
+                    for (int i = 0; i < AllPlayers.ElementAt(2).CardsInHand; i++)
+                    {
+                        Image image = new Image();
+                        BitmapImage bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
+                        bitmapImage.EndInit();
+                        image.Source = bitmapImage;
+                        CanvasLeft.Children.Add(image);
+                        image.MaxHeight = 100;
+                        image.Margin = new Thickness(MarginLeft2, 0, 0, 0);
+                        MarginLeft2 += Left2;
+                    }
                 }
             }
-            else if (AllPlayers.Count == 2)
+            catch (Exception e)
             {
-                PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand;
-                PlayerRight.Content = AllPlayers.ElementAt(1).Name + ": " + AllPlayers.ElementAt(1).CardsInHand;
-                for (int i = 0; i < AllPlayers.ElementAt(0).CardsInHand; i++)
-                {
-                    Image image = new Image();
-                    BitmapImage bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
-                    bitmapImage.EndInit();
-                    image.Source = bitmapImage;
-                    StackPanelTop.Children.Add(image);
-                }
-                for (int i = 0; i < AllPlayers.ElementAt(1).CardsInHand; i++)
-                {
-                    Image image = new Image();
-                    BitmapImage bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
-                    bitmapImage.EndInit();
-                    image.Source = bitmapImage;
-                    StackPanelRight.Children.Add(image);
-                }
-            }
-            else
-            {
-                PlayerTop.Content = AllPlayers.ElementAt(0).Name + ": " + AllPlayers.ElementAt(0).CardsInHand;
-                PlayerRight.Content = AllPlayers.ElementAt(1).Name + ": " + AllPlayers.ElementAt(1).CardsInHand;
-                PlayerLeft.Content = AllPlayers.ElementAt(2).Name + ": " + AllPlayers.ElementAt(2).CardsInHand;
-                for (int i = 0; i < AllPlayers.ElementAt(0).CardsInHand; i++)
-                {
-                    Image image = new Image();
-                    BitmapImage bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
-                    bitmapImage.EndInit();
-                    image.Source = bitmapImage;
-                    StackPanelTop.Children.Add(image);
-                }
-                for (int i = 0; i < AllPlayers.ElementAt(1).CardsInHand; i++)
-                {
-                    Image image = new Image();
-                    BitmapImage bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
-                    bitmapImage.EndInit();
-                    image.Source = bitmapImage;
-                    StackPanelRight.Children.Add(image);
-                }
-                for (int i = 0; i < AllPlayers.ElementAt(2).CardsInHand; i++)
-                {
-                    Image image = new Image();
-                    BitmapImage bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.UriSource = new Uri("./Cards/backCard.png", UriKind.RelativeOrAbsolute);
-                    bitmapImage.EndInit();
-                    image.Source = bitmapImage;
-                    StackPanelLeft.Children.Add(image);
-                }
+                string s=e.Message;
             }
 
 
@@ -307,6 +351,8 @@ namespace Crazy8
                 image.Source = bitmapImage;
                 button.Content = image;
                 button.Click += PickSuitClick;
+                button.Background = Brushes.White;
+                button.BorderThickness = new Thickness(0, 0, 0, 0);
                 button.Name = "Eight_Hearts";
                 StackPanelSuit.Children.Add(button);
             }
@@ -319,6 +365,8 @@ namespace Crazy8
                 bitmapImage.EndInit();
                 image.Source = bitmapImage;
                 button.Click += PickSuitClick;
+                button.Background = Brushes.White;
+                button.BorderThickness = new Thickness(0, 0, 0, 0);
                 button.Content = image;
                 button.Name = "Eight_Diamonds";
                 StackPanelSuit.Children.Add(button);
@@ -333,6 +381,8 @@ namespace Crazy8
                 image.Source = bitmapImage;
                 button.Content = image;
                 button.Click += PickSuitClick;
+                button.Background = Brushes.White;
+                button.BorderThickness = new Thickness(0, 0, 0, 0);
                 button.Name = "Eight_Clubs";
                 StackPanelSuit.Children.Add(button);
             }
@@ -346,6 +396,8 @@ namespace Crazy8
                 image.Source = bitmapImage;
                 button.Content = image;
                 button.Click += PickSuitClick;
+                button.Background = Brushes.White;
+                button.BorderThickness = new Thickness(0, 0, 0, 0);
                 button.Name = "Eight_Spades";
                 StackPanelSuit.Children.Add(button);
             }
