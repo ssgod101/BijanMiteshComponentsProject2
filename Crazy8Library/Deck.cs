@@ -27,7 +27,7 @@ namespace Crazy8Library
     {
         [OperationContract] bool Join(string name);
         [OperationContract(IsOneWay = true)] void Leave(string name);
-        //[OperationContract] Card[] Draw(string name, int amount);
+        [OperationContract] List<Card> Draw(string name, int amount);
         [OperationContract] Card DrawSingle(string name);
         [OperationContract] bool PlaceDown(string name,Card placed);
         [OperationContract] bool NewGame(string name);
@@ -82,26 +82,21 @@ namespace Crazy8Library
                 string nextPlayer = name;
                 bool enoughPlayers = false;
                 Console.WriteLine(name + " has left!");
-                if (turnManager[turnIndex] == name && !canJoin)
-                {
-                    NextTurn();
-                    nextPlayer = turnManager[turnIndex];
-
-                }
+                if (turnManager[turnIndex] == name) { NextTurn(); }
+                nextPlayer = turnManager[turnIndex];
                 userCallBacks.Remove(name);
                 turnManager.Remove(name);
-                if(turnManager.Count >= 2 && !canJoin)
+                if (turnManager.Count >= 1)
                 {
                     turnIndex = turnManager.FindIndex(n => n == nextPlayer);
+                    if (turnManager.Count < 2 && !canJoin)
+                    {
+                        UnlockServer();
+                        enoughPlayers = true;
+                    }
                 }
-                else if(!canJoin)
-                {
-                    enoughPlayers = true;
-                }
-
-                //if()
-                //0 1 2 3
-                if(userCallBacks.Count > 0) { currentAdmin = userCallBacks.First().Value.Name; }
+                if (userCallBacks.Count > 0) { currentAdmin = userCallBacks.First().Value.Name; }
+                else { currentAdmin = ""; }
                 updateAllClients("", false,enoughPlayers);
             }
         }
@@ -126,10 +121,24 @@ namespace Crazy8Library
             LockServer(name);
             Shuffle();
             turnIndex = 0;
+            //currentTurn = turnManager[turnIndex];
             TopCard = cards[cardIdx];
             cardIdx++;
+            foreach(Player p in userCallBacks.Values)
+            {
+                p.CardsInHand = 0;
+            }
+            Console.WriteLine("[Game #" + objNum + "] Starting a new game!");
             updateAllClients("", true,false);
             return true;
+        }
+
+        public void DebugWin(string name)
+        {
+            UnlockServer();
+            TwoChain = 0;
+            Console.WriteLine("[Game #" + objNum + "] Declares " + name + " as the winner!");
+            updateAllClients(name, false, false);
         }
 
         //Game functions
@@ -149,17 +158,19 @@ namespace Crazy8Library
             Repopulate();
         }
 
-        public Card[] Draw(string name, int amount)
+        public List<Card> Draw(string name, int amount)
         {
-            Card[] cardsToGive = new Card[amount];
+            List<Card> cardsToGive = new List<Card>();
             for (int i = 0; i < amount; i++)
             {
                 if (cardIdx >= cards.Count) { Shuffle(); }
-                Card card = cards[cardIdx++];
+                Card card = new Card(cards[cardIdx].Suit,cards[cardIdx].Rank);
+                cardsToGive.Add(card);
+                cardIdx++;
                 userCallBacks[name].CardsInHand++;
                 Console.WriteLine("[Game #" + objNum + "] Dealing " + card);
-                cardsToGive[i] = card;
             }
+            updateAllClients("", false, false);
             return cardsToGive;
         }
 
@@ -177,6 +188,7 @@ namespace Crazy8Library
         {
             if (turnManager[turnIndex] != name || canJoin) { return false; }
             NextTurn();
+            //DebugWin(name);
             updateAllClients("",false,false);
             return true;
         }
@@ -230,8 +242,7 @@ namespace Crazy8Library
             {
                 UnlockServer();
                 TwoChain = 0;
-                turnIndex = 0;
-                
+                Console.WriteLine("[Game #" + objNum + "] Declares " + name + " as the winner!");
                 updateAllClients(name, false,false);
             }
             else
@@ -258,9 +269,9 @@ namespace Crazy8Library
         private void updateAllClients(string winner, bool start,bool notEnough)
         {
             int t = turnManager.Count;
-            string h = "";
-            h = turnManager.Count > 0 ? turnManager[turnIndex] : "";
-            CallbackInfo info = new CallbackInfo(userCallBacks.Count, userCallBacks.Values.ToList(), h, currentAdmin, winner, TopCard,TwoChain, start);
+            string turn = "";
+            if (turnManager.Count > 0) { turn = turnManager[turnIndex]; }
+            CallbackInfo info = new CallbackInfo(userCallBacks.Count, userCallBacks.Values.ToList(), turn, currentAdmin, winner, TopCard,TwoChain, start,notEnough);
             foreach (Player player in userCallBacks.Values)
             {
                 player.PlayerCallBack.UpdateGui(info);

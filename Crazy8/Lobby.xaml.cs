@@ -70,13 +70,13 @@ namespace Crazy8
         public void UpdateLobby(int numPlayers,List<Player> playerNames,string admin) {
            
             if (name != admin) {Play.Content = "Wait for Admin"; }
+            else { Play.Content = "PLAY"; }
             Players.Content = numPlayers;
             lbNames.Items.Clear(); 
             foreach (Player player in playerNames)
             {
                 if (player.Name == admin) { lbNames.Items.Add(admin + " (Admin)"); }
                 else { lbNames.Items.Add(player.Name); }
-                
             }
         }
 

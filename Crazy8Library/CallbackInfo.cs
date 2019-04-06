@@ -17,13 +17,13 @@ namespace Crazy8Library
         [DataMember] public string Winner { get; set; }
         [DataMember] public string CurrentTurn { get; set; }
         [DataMember] public int PickUpCards { get; private set; }
-        [DataMember] public int NotEnoughPlayers { get; set; }
+        [DataMember] public bool NotEnoughPlayers { get; set; }
 
         //Lobby Info
         [DataMember] public int numPlayers { get; private set; }
         [DataMember] public List<Player> AllPlayers { get; private set; }
 
-        public CallbackInfo(int num, List<Player> players,string turn,string admin, string win,Card top,int pick, bool start)
+        public CallbackInfo(int num, List<Player> players, string turn, string admin, string win, Card top, int pick, bool start, bool invalid)
         {
             Administrator = admin;
             Winner = win;
@@ -33,6 +33,7 @@ namespace Crazy8Library
             AllPlayers = players;
             CurrentTurn = turn;
             PickUpCards = pick;
+            NotEnoughPlayers = invalid;
         }
     }
 }
