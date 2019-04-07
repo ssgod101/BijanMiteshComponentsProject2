@@ -45,13 +45,13 @@ namespace Crazy8
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
-            deck.Leave(name);
+            if (!Join.IsEnabled) { deck.Leave(name); }
             Environment.Exit(0);
 
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            deck.Leave(name);
+            if (!Join.IsEnabled) { deck.Leave(name); }
             Environment.Exit(0);
         }
 
