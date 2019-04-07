@@ -57,6 +57,6 @@
             <Image Source="./Cards/BackCard.png" ></Image>
         </Button>
         <Button x:Name="btnCurrentCard" BorderThickness="0" Background="White" Margin="750,357,570,369" ></Button>
-        <Button x:Name="btnEndTurn" Content="End Turn !" Margin="1344,801,30,100" Click="BtnEndTurn_Click"></Button>
+        <Button x:Name="btnEndTurn" Content="End Turn !" Margin="1387,801,30,100" Click="BtnEndTurn_Click"></Button>
     </Grid>
 </Window>

@@ -178,29 +178,36 @@ namespace Crazy8
         }
 
         private void MakeBtnCardOnScreen() {
-            CanvasBottom.Children.Clear();
-            double Left = 1112 / PlayerHand.Count;
-            double MarginLeft = 0.0;
-            foreach (Card card in PlayerHand)
+            try
             {
-                Button button = new Button();
-                Image image = new Image();
-                string temp = "./Cards/" + card.ToString() + ".png";
-               BitmapImage bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.UriSource = new Uri(temp, UriKind.RelativeOrAbsolute);
-                bitmapImage.EndInit();
-                image.Source = bitmapImage;
-                button.Content = image;
-                button.Name = card.ToString();
-                button.Click += Card_Click;
-                button.MaxHeight = 152;
-                CanvasBottom.Children.Add(button);
-                button.Background = Brushes.White;
-                button.BorderThickness = new Thickness(0, 0, 0, 0);
-                button.Margin = new Thickness(MarginLeft,0,0,0);
-                MarginLeft += Left;
-            } 
+                CanvasBottom.Children.Clear();
+                double Left = 1112 / PlayerHand.Count;
+                double MarginLeft = 0.0;
+                foreach (Card card in PlayerHand)
+                {
+                    Button button = new Button();
+                    Image image = new Image();
+                    string temp = "./Cards/" + card.ToString() + ".png";
+                    BitmapImage bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.UriSource = new Uri(temp, UriKind.RelativeOrAbsolute);
+                    bitmapImage.EndInit();
+                    image.Source = bitmapImage;
+                    button.Content = image;
+                    button.Name = card.ToString();
+                    button.Click += Card_Click;
+                    button.MaxHeight = 152;
+                    CanvasBottom.Children.Add(button);
+                    button.Background = Brushes.White;
+                    button.BorderThickness = new Thickness(0, 0, 0, 0);
+                    button.Margin = new Thickness(MarginLeft, 0, 0, 0);
+                    MarginLeft += Left;
+                }
+            }
+            catch (Exception e)
+            {
+                string s = e.Message;
+            }
         }
         private void UpdateOtherPlayersCard(List<Player> AllPlayers)
         {
