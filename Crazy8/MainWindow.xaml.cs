@@ -48,9 +48,6 @@ namespace Crazy8
             }
              lobby = new Lobby(ref deck);
             lobby.ShowDialog();
-            PlayerName = lobby.name;
-            NewGame();
-
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -58,11 +55,11 @@ namespace Crazy8
             Environment.Exit(0);
         }
         private void NewGame() {
-            deck.NewGame(PlayerName);
             PlayerHand = new List<Card>();
-            for (int i = 0; i < 5; i++)
+            List<Card> cardsToAdd = deck.Draw(PlayerName,5);
+            for (int i = 0; i < cardsToAdd.Count; i++)
             {
-                PlayerHand.Add(deck.DrawSingle(PlayerName));
+                PlayerHand.Add(cardsToAdd[i]);
             }
             MakeBtnCardOnScreen();
             PlayerBotton.Content = PlayerName;
@@ -74,41 +71,58 @@ namespace Crazy8
         {
             if (System.Threading.Thread.CurrentThread == this.Dispatcher.Thread)
             {
-                if (info.StartGame) { lobby.Hide();}
-                if (PlayerName != "") { UpdateOtherPlayersCard(info.AllPlayers);
-                    lCurrentTurn.Content = "Player turn: "+info.CurrentTurn;
-                    Image image = new Image();
-                    string temp = "./Cards/" + info.CurrentCard.ToString() + ".png";
-                    BitmapImage bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.UriSource = new Uri(temp, UriKind.RelativeOrAbsolute);
-                    bitmapImage.EndInit();
-                    image.Source = bitmapImage;
-                    btnCurrentCard.Content = image;
-                   
+                if (info.StartGame) {
+                    lobby.Hide();
+                    PlayerName = lobby.name;
+                    NewGame();
+                    this.Show();
                 }
-                lobby.UpdateLobby(info.numPlayers,info.AllPlayers,info.Administrator);
-                Administrator = info.Administrator;
-                if(info.Winner.Length > 0)
+                else
                 {
-                    MessageBox.Show(info.Winner+" wins!");
-                    this.Hide();
-                    deck.Leave(PlayerName);
-                    lobby.Join.IsEnabled = true;
-                    lobby.ShowDialog();
-                }
-                CurrentTurn = info.CurrentTurn;
-                
-                if(CurrentTurn == PlayerName && info.PickUpCards > 0 && !gotNumberTwo)
-                {
-                    for(int i = 0; i < info.PickUpCards; i++)
+                    if (info.NotEnoughPlayers)
                     {
-                        PlayerHand.Add(deck.DrawSingle(PlayerName));
+                        MessageBox.Show("Not enough players to continue game...\n\nReturning to Lobby.");
+                        this.Hide();
+                        lobby.Show();
                     }
-                    MakeBtnCardOnScreen();
-                    gotNumberTwo = true;
+                    if (PlayerName != "")
+                    {
+                        UpdateOtherPlayersCard(info.AllPlayers);
+                        lCurrentTurn.Content = "Player turn: " + info.CurrentTurn;
+                        Image image = new Image();
+                        string temp = "./Cards/" + info.CurrentCard.ToString() + ".png";
+                        BitmapImage bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.UriSource = new Uri(temp, UriKind.RelativeOrAbsolute);
+                        bitmapImage.EndInit();
+                        image.Source = bitmapImage;
+                        btnCurrentCard.Content = image;
+
+                    }
+                    Administrator = info.Administrator;
+                    lobby.UpdateLobby(info.numPlayers, info.AllPlayers, Administrator);
+                    if (info.Winner.Length > 0)
+                    {
+                        MessageBox.Show(info.Winner + " wins!");
+                        this.Hide();
+                        //deck.Leave(PlayerName);
+                        //lobby.UpdateLobby(0,new List<Player>(),Administrator);
+                        //lobby.Join.IsEnabled = true;
+                        lobby.ShowDialog();
+                    }
+                    CurrentTurn = info.CurrentTurn;
+
+                    if (CurrentTurn == PlayerName && info.PickUpCards > 0 && !gotNumberTwo)
+                    {
+                        for (int i = 0; i < info.PickUpCards; i++)
+                        {
+                            PlayerHand.Add(deck.DrawSingle(PlayerName));
+                        }
+                        MakeBtnCardOnScreen();
+                        gotNumberTwo = true;
+                    }
+                    //if (info.StartGame) { MessageBox.Show("Player Name: " + PlayerName + "\nCurrent Player: " + CurrentTurn); }
                 }
-                
             }
             else
             {
@@ -148,7 +162,6 @@ namespace Crazy8
                         MakeBtnCardOnScreen();
                         pickedOne = false;
                         gotNumberTwo = false;
-
                     }
                 }
             }
@@ -167,14 +180,14 @@ namespace Crazy8
 
         private void BtnDeck_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentTurn == PlayerName && !pickedOne) {
+            if (CurrentTurn == PlayerName && !pickedOne)
+            {
 
 
                 PlayerHand.Add(deck.DrawSingle(PlayerName));
                 MakeBtnCardOnScreen();
- 
+                pickedOne = true;
             }
-            pickedOne = true;
         }
 
         private void MakeBtnCardOnScreen() {
@@ -209,13 +222,21 @@ namespace Crazy8
                 string s = e.Message;
             }
         }
-        private void UpdateOtherPlayersCard(List<Player> AllPlayers)
+        private void UpdateOtherPlayersCard(List<Player> SAMELIST)
         {
+            List<Player> AllPlayers = new List<Player>();
+            foreach(Player p in SAMELIST)
+            {
+                AllPlayers.Add(p);
+            }
             AllPlayers.Remove(AllPlayers.Find(a => a.Name == PlayerName));
-           
+            
             CanvasTop.Children.Clear();
             CanvasLeft.Children.Clear();
             CanvasRight.Children.Clear();
+            PlayerTop.Content = "";
+            PlayerLeft.Content = "";
+            PlayerRight.Content = "";
             
             try
             {
